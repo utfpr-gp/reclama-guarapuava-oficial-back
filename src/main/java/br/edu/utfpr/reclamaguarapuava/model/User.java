@@ -10,7 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Data;
 
@@ -51,7 +51,7 @@ public class User implements Serializable {
     @Column(nullable = false)
     private ProfileEnum profile;
 
-    @OneToOne
+    @ManyToOne
     private City city;
 
     private Date created;
