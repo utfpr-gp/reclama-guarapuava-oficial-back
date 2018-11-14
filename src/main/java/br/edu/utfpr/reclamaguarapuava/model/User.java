@@ -1,34 +1,26 @@
 package br.edu.utfpr.reclamaguarapuava.model;
 
+import br.edu.utfpr.reclamaguarapuava.security.ProfileEnum;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  *
  * @author Carlos Henrique
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 @Entity
-@Table(name = "user")
+@Table(name = "user_tb")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -40,27 +32,28 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String name;
 
-    @Column(length = 100, unique = true, nullable = false, columnDefinition = "VARCHAR(100)")
+    @Column(length = 100, unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String password;
 
-    @Column(length = 25, columnDefinition = "VARCHAR(25)")
+    @Column(length = 25)
     private String genre;
 
-    @Column(nullable = false, columnDefinition = "DATE")
+    @Column(nullable = false)
     private Date date_birth;
 
-    @Column(length = 11, unique = true, nullable = false, columnDefinition = "VARCHAR(11)")
+    @Column(length = 11, unique = true, nullable = false)
     private String cpf;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ProfileEnum profile;
 
     @OneToOne
     private City city;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
-    private Set<Occurrence> occurences;
-
-    @OneToMany(cascade = CascadeType.REMOVE)
-    private Set<Comment> comments;
+    private Date created;
+    private Date updated;
 }
