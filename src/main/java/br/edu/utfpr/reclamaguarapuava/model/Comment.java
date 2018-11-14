@@ -1,6 +1,7 @@
 package br.edu.utfpr.reclamaguarapuava.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,9 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  *
@@ -21,10 +20,8 @@ import lombok.Setter;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 @Entity
-@Table(name = "comment")
+@Table(name = "comment_tb")
 public class Comment implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,6 +29,9 @@ public class Comment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private Date date_comment_created;
 
     @ManyToOne
     private User user;

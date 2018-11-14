@@ -1,6 +1,7 @@
 package br.edu.utfpr.reclamaguarapuava.model;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,9 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  *
@@ -20,11 +19,9 @@ import lombok.Setter;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 @Entity
-@Table(name = "liked_notliked")
-public class LikedNotLiked implements Serializable {
+@Table(name = "photo_tb")
+public class Photo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,12 +29,9 @@ public class LikedNotLiked implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Occurrence occurrence;
+    @Column(nullable = false)
+    private String url;
 
     @ManyToOne
     private User user;
-
-    private Long liked_notliked;
-
 }

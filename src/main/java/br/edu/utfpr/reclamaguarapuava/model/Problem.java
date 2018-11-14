@@ -1,18 +1,17 @@
 package br.edu.utfpr.reclamaguarapuava.model;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  *
@@ -21,10 +20,8 @@ import lombok.Setter;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 @Entity
-@Table(name = "problem")
+@Table(name = "problem_tb")
 public class Problem implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -35,7 +32,13 @@ public class Problem implements Serializable {
 
     private String name;
 
-    @OneToMany
-    private Set<Occurrence> occurrences;
+    @Column(nullable = false)
+    private Date date_created;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    @ManyToOne
+    private Category category;
 
 }
