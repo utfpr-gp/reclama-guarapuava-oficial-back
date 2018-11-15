@@ -23,6 +23,31 @@ public class ProblemService {
     @Autowired
     ProblemRepository problemRepository;
 
+    public List<Problem> findAll() {
+        return problemRepository.findAll();
+    }
+
+    public Page<Problem> findAll(Pageable pageable) {
+        return problemRepository.findAll(pageable);
+    }
+
+
+    public Optional<Problem> findById(Long id) {
+        return this.problemRepository.findById(id);
+    }
+
+    public Problem save(Problem problem) {
+        return this.problemRepository.save(problem);
+    }
+
+    public void deleteById(Long id) {
+        this.problemRepository.deleteById(id);
+    }
+
+    public Optional<Problem> findByName(String name) {
+        return problemRepository.findByName(name);
+    }
+
     public void deleteAllByCategoryId(Long id) {
         this.problemRepository.deleteAllByCategoryId(id);
     }

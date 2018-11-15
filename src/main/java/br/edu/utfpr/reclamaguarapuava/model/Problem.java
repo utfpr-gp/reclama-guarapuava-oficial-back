@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import br.edu.utfpr.reclamaguarapuava.model.dto.ProblemDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,8 +21,6 @@ import lombok.NoArgsConstructor;
  * @author Carlos Henrique
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "problem_tb")
 public class Problem implements Serializable {
@@ -41,4 +41,31 @@ public class Problem implements Serializable {
 
     @ManyToOne
     private Category category;
+
+    public Problem() {
+
+    }
+
+    public Problem(String name, Date date_created, String description, Category category) {
+        this.name = name;
+        this.date_created = date_created;
+        this.description = description;
+        this.category = category;
+    }
+
+    public Problem(ProblemDTO problemDTO) {
+        this.id = problemDTO.getId();
+        this.name = problemDTO.getName();
+        this.description = problemDTO.getDescription();
+        this.date_created = problemDTO.getDate_created();
+        this.category = problemDTO.getCategory();
+    }
+
+    public void update(ProblemDTO problemDTO) {
+        this.id = problemDTO.getId();
+        this.name = problemDTO.getName();
+        this.description = problemDTO.getDescription();
+        this.date_created = problemDTO.getDate_created();
+        this.category = problemDTO.getCategory();
+    }
 }

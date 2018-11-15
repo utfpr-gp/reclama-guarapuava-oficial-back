@@ -10,4 +10,7 @@ public interface OccurrenceRepository extends JpaRepository<Occurrence, Long> {
 
     @Query("SELECT occurrences from Occurrence occurrences where occurrences.problem.category.id = ?1")
     List<Occurrence> findByCategory(Long id);
+
+    @Query("SELECT occurrences from Occurrence occurrences where occurrences.problem.id = ?1")
+    List<Occurrence> findByProblem(Long id);
 }

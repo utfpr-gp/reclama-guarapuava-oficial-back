@@ -1,8 +1,9 @@
 package br.edu.utfpr.reclamaguarapuava.controller;
 
 import br.edu.utfpr.reclamaguarapuava.model.Category;
-import br.edu.utfpr.reclamaguarapuava.model.dto.CategoryDTO;
-import br.edu.utfpr.reclamaguarapuava.model.repository.CategoryRepository;
+import br.edu.utfpr.reclamaguarapuava.model.Problem;
+import br.edu.utfpr.reclamaguarapuava.model.dto.ProblemDTO;
+import br.edu.utfpr.reclamaguarapuava.model.dto.ProblemDTO;
 import br.edu.utfpr.reclamaguarapuava.service.CategoryService;
 import br.edu.utfpr.reclamaguarapuava.service.OccurrenceService;
 import br.edu.utfpr.reclamaguarapuava.service.ProblemService;
@@ -22,17 +23,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
-@RequestMapping("/api/admin/categorias")
+@RequestMapping("/api/admin/problemas")
 @CrossOrigin(origins = "*")
-public class CategoryResource {
+public class ProblemResource {
 
-    private static final Logger log = LoggerFactory.getLogger(CategoryResource.class);
-
-    @Autowired
-    CategoryService categoryService;
+    private static final Logger log = LoggerFactory.getLogger(ProblemResource.class);
 
     @Autowired
     OccurrenceService occurrenceService;
@@ -44,84 +41,85 @@ public class CategoryResource {
     private int paginationAmount;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Category> index() {
-        return categoryService.findAll();
+    public List<Problem> index() {
+        return problemService.findAll();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Response<CategoryDTO>> getById(@PathVariable Long id) {
-        Response<CategoryDTO> response = new Response<>();
+    public ResponseEntity<Response<ProblemDTO>> getById(@PathVariable Long id) {
+        Response<ProblemDTO> response = new Response<>();
 
-        Optional<Category> category = categoryService.findById(id);
+        Optional<Problem> problem = problemService.findById(id);
 
-        if (!category.isPresent()) {
-            response.addError("Categoria não encontrada");
+        if (!problem.isPresent()) {
+            response.addError("Problema não encontrado");
             return ResponseEntity.badRequest().body(response);
         }
 
-        CategoryDTO categoryDTO = new CategoryDTO(category);
+        ProblemDTO problemDTO = new ProblemDTO(problem);
 
-        response.setData(categoryDTO);
+        response.setData(problemDTO);
         return ResponseEntity.ok(response);
     }
 
     @RequestMapping(value = "/salvar", method = RequestMethod.POST)
-    public ResponseEntity<Response<CategoryDTO>> store(@Valid @RequestBody CategoryDTO dto, BindingResult result) {
-        Response<CategoryDTO> response = new Response<>();
+    public ResponseEntity<Response<ProblemDTO>> store(@Valid @RequestBody ProblemDTO dto, BindingResult result) {
+        Response<ProblemDTO> response = new Response<>();
 
         if (result.hasErrors()) {
             response.setErrors(result);
             return ResponseEntity.badRequest().body(response);
         }
 
-        Optional<Category> categoryOptional = categoryService.findByName(dto.getName());
-        if (categoryOptional.isPresent()) {
-            response.addError("Categoria já cadastrada.");
+        Optional<Problem> problemOptional = problemService.findByName(dto.getName());
+        if (problemOptional.isPresent() && problemOptional.get().getDescription().equals(dto.getDescription())) {
+            response.addError("Problema já cadastrado.");
             return ResponseEntity.badRequest().body(response);
         }
 
-        Category category = new Category(dto);
+        Problem problem = new Problem(dto);
         try {
-            categoryService.save(category);
+            problemService.save(problem);
         } catch (Exception e) {
             response.addError("Houve um erro ao persistir os seus dados.");
             return ResponseEntity.badRequest().body(response);
         }
 
-        dto = new CategoryDTO(category);
+        dto = new ProblemDTO(problem);
         response.setData(dto);
 
         return ResponseEntity.ok(response);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody CategoryDTO dto, BindingResult result) {
-        Response<CategoryDTO> response = new Response<>();
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody ProblemDTO dto, BindingResult result) {
+        Response<ProblemDTO> response = new Response<>();
 
         if (result.hasErrors()) {
             response.setErrors(result);
             return ResponseEntity.badRequest().body(response);
         }
 
-        Optional<Category> categoryOptional = categoryService.findById(id);
-        if (!categoryOptional.isPresent()) {
-            response.addError("Categoria não encontrada.");
+        Optional<Problem> problemOptional = problemService.findById(id);
+        if (!problemOptional.isPresent()) {
+            response.addError("Problema não encontrado.");
             return ResponseEntity.badRequest().body(response);
         }
 
-        Category category = categoryOptional.get();
+        Problem problem = problemOptional.get();
 
-        if (!category.getName().equals(dto.getName())) {
-            if (categoryService.findByName(dto.getName()).isPresent()) {
-                response.addError("Nome sendo usado em outra categoria");
+        if (!problem.getName().equals(dto.getName())) {
+            Optional<Problem> problem1 = problemService.findByName(dto.getName());
+            if (problem1.isPresent() && problem1.get().getDescription().equals(dto.getDescription())) {
+                response.addError("Nome e descrição sendo usados em outro problema");
                 return ResponseEntity.badRequest().body(response);
             }
         }
 
-        category.update(dto);
-        category = categoryService.save(category);
+        problem.update(dto);
+        problem = problemService.save(problem);
 
-        dto = new CategoryDTO(category);
+        dto = new ProblemDTO(problem);
         response.setData(dto);
 
         return ResponseEntity.ok(response);
@@ -129,27 +127,26 @@ public class CategoryResource {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Response<String>> delete(@PathVariable Long id) {
-        log.info("Removendo categoria com id {}", id);
+        log.info("Removendo problema com id {}", id);
 
         Response<String> response = new Response<>();
 
-        Optional<Category> category = categoryService.findById(id);
+        Optional<Problem> problemOptional = problemService.findById(id);
 
-        if (!occurrenceService.findByCategory(id).isEmpty()) {
-            response.addError("Não é possível apagar categoria com ocorrências associadas");
+        if (!occurrenceService.findByProblem(id).isEmpty()) {
+            response.addError("Não é possível apagar problema com ocorrências associadas");
             return ResponseEntity.badRequest().body(response);
         }
 
-        if (!category.isPresent()) {
-            response.addError("Erro ao apagar categoria com o id " + id);
+        if (!problemOptional.isPresent()) {
+            response.addError("Erro ao apagar problema com o id " + id);
             return ResponseEntity.badRequest().body(response);
         }
 
         try {
-            this.problemService.deleteAllByCategoryId(id);
-            this.categoryService.deleteById(id);
+            this.problemService.deleteById(id);
         } catch (ObjectDeletedException e) {
-            response.addError("Erro ao apagar categoria");
+            response.addError("Erro ao apagar problema");
             return ResponseEntity.badRequest().body(response);
         }
 
@@ -157,19 +154,19 @@ public class CategoryResource {
     }
 
     @GetMapping(value = "/paginacao")
-    public ResponseEntity<Response<Page<CategoryDTO>>> findAllPaginationWithPage(
+    public ResponseEntity<Response<Page<ProblemDTO>>> findAllPaginationWithPage(
             @RequestParam(value = "pag", defaultValue = "0") int page,
             @RequestParam(value = "ord", defaultValue = "name") String order,
             @RequestParam(value = "dir", defaultValue = "ASC") String direction) {
 
-        log.info("Buscando categorias ordenadas por {}, página {}", order, page);
+        log.info("Buscando problemas ordenados por {}, página {}", order, page);
 
-        Response<Page<CategoryDTO>> response = new Response<>();
+        Response<Page<ProblemDTO>> response = new Response<>();
 
         PageRequest pageRequest = PageRequest.of(page, this.paginationAmount, Sort.Direction.valueOf(direction), order);
 
-        Page<Category> categories = this.categoryService.findAll(pageRequest);
-        Page<CategoryDTO> categoryDTOs = categories.map(CategoryDTO::new);
+        Page<Problem> problems = this.problemService.findAll(pageRequest);
+        Page<ProblemDTO> categoryDTOs = problems.map(ProblemDTO::new);
 
         response.setData(categoryDTOs);
         return ResponseEntity.ok(response);

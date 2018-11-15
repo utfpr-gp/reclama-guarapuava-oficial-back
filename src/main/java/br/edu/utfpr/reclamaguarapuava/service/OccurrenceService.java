@@ -24,4 +24,8 @@ public class OccurrenceService {
     public List<Occurrence> findByCategory(Long id) {
         return occurrenceRepository.findByCategory(id);
     }
+
+    public List<Occurrence> findByProblem(Long id) {
+        return occurrenceRepository.findByProblem(id);
+    }
 }
