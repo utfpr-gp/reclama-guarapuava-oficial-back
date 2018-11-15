@@ -10,9 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  *
@@ -21,10 +19,8 @@ import lombok.Setter;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 @Entity
-@Table(name = "city")
+@Table(name = "city_tb")
 public class City implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -36,7 +32,7 @@ public class City implements Serializable {
     @ManyToOne
     private State state;
 
-    @Column(length = 50, columnDefinition = "VARCHAR(50)")
+    @Column(length = 50, nullable = false)
     private String name;
 
 }
