@@ -8,9 +8,7 @@ import java.util.List;
 
 public interface OccurrenceRepository extends JpaRepository<Occurrence, Long> {
 
-    @Query("SELECT occurrences from Occurrence occurrences where occurrences.problem.category.id = ?1")
-    List<Occurrence> findByCategory(Long id);
+    List<Occurrence> findAllByProblem_CategoryId(Long id);
 
-    @Query("SELECT occurrences from Occurrence occurrences where occurrences.problem.id = ?1")
-    List<Occurrence> findByProblem(Long id);
+    List<Occurrence> findAllByProblemId(Long id);
 }

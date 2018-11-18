@@ -2,18 +2,13 @@ package br.edu.utfpr.reclamaguarapuava.model.dto;
 
 import br.edu.utfpr.reclamaguarapuava.model.Category;
 import br.edu.utfpr.reclamaguarapuava.model.Problem;
-import br.edu.utfpr.reclamaguarapuava.service.CategoryService;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 import java.util.Optional;
 
 public class ProblemDTO {
-
-    @Autowired
-    CategoryService categoryService;
 
     private Long id;
 

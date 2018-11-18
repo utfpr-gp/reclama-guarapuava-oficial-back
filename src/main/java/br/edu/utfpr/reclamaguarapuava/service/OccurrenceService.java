@@ -22,10 +22,10 @@ public class OccurrenceService {
     OccurrenceRepository occurrenceRepository;
 
     public List<Occurrence> findByCategory(Long id) {
-        return occurrenceRepository.findByCategory(id);
+        return occurrenceRepository.findAllByProblem_CategoryId(id);
     }
 
     public List<Occurrence> findByProblem(Long id) {
-        return occurrenceRepository.findByProblem(id);
+        return occurrenceRepository.findAllByProblemId(id);
     }
 }

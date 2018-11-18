@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -37,15 +38,14 @@ public class ProblemResource {
     @Autowired
     ProblemService problemService;
 
-    @Value("${page.amount}")
-    private int paginationAmount;
-
-    @RequestMapping(method = RequestMethod.GET)
-    public List<Problem> index() {
-        return problemService.findAll();
+    @GetMapping
+    public ResponseEntity<Response<Page<Problem>>> index(Pageable pageable) {
+        Response<Page<Problem>> response = new Response<>();
+        response.setData(problemService.findAll(pageable));
+        return ResponseEntity.ok(response);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Response<ProblemDTO>> getById(@PathVariable Long id) {
         Response<ProblemDTO> response = new Response<>();
 
@@ -62,7 +62,7 @@ public class ProblemResource {
         return ResponseEntity.ok(response);
     }
 
-    @RequestMapping(value = "/salvar", method = RequestMethod.POST)
+    @PostMapping
     public ResponseEntity<Response<ProblemDTO>> store(@Valid @RequestBody ProblemDTO dto, BindingResult result) {
         Response<ProblemDTO> response = new Response<>();
 
@@ -150,25 +150,6 @@ public class ProblemResource {
             return ResponseEntity.badRequest().body(response);
         }
 
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping(value = "/paginacao")
-    public ResponseEntity<Response<Page<ProblemDTO>>> findAllPaginationWithPage(
-            @RequestParam(value = "pag", defaultValue = "0") int page,
-            @RequestParam(value = "ord", defaultValue = "name") String order,
-            @RequestParam(value = "dir", defaultValue = "ASC") String direction) {
-
-        log.info("Buscando problemas ordenados por {}, página {}", order, page);
-
-        Response<Page<ProblemDTO>> response = new Response<>();
-
-        PageRequest pageRequest = PageRequest.of(page, this.paginationAmount, Sort.Direction.valueOf(direction), order);
-
-        Page<Problem> problems = this.problemService.findAll(pageRequest);
-        Page<ProblemDTO> categoryDTOs = problems.map(ProblemDTO::new);
-
-        response.setData(categoryDTOs);
         return ResponseEntity.ok(response);
     }
 }

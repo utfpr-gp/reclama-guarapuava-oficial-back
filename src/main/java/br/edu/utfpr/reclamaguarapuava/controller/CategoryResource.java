@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -40,15 +41,14 @@ public class CategoryResource {
     @Autowired
     ProblemService problemService;
 
-    @Value("${page.amount}")
-    private int paginationAmount;
-
-    @RequestMapping(method = RequestMethod.GET)
-    public List<Category> index() {
-        return categoryService.findAll();
+    @GetMapping
+    public ResponseEntity<Response<Page<Category>>> index(Pageable pageable) {
+        Response<Page<Category>> response = new Response<>();
+        response.setData(categoryService.findAll(pageable));
+        return ResponseEntity.ok(response);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Response<CategoryDTO>> getById(@PathVariable Long id) {
         Response<CategoryDTO> response = new Response<>();
 
@@ -65,7 +65,7 @@ public class CategoryResource {
         return ResponseEntity.ok(response);
     }
 
-    @RequestMapping(value = "/salvar", method = RequestMethod.POST)
+    @PostMapping
     public ResponseEntity<Response<CategoryDTO>> store(@Valid @RequestBody CategoryDTO dto, BindingResult result) {
         Response<CategoryDTO> response = new Response<>();
 
@@ -153,25 +153,6 @@ public class CategoryResource {
             return ResponseEntity.badRequest().body(response);
         }
 
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping(value = "/paginacao")
-    public ResponseEntity<Response<Page<CategoryDTO>>> findAllPaginationWithPage(
-            @RequestParam(value = "pag", defaultValue = "0") int page,
-            @RequestParam(value = "ord", defaultValue = "name") String order,
-            @RequestParam(value = "dir", defaultValue = "ASC") String direction) {
-
-        log.info("Buscando categorias ordenadas por {}, página {}", order, page);
-
-        Response<Page<CategoryDTO>> response = new Response<>();
-
-        PageRequest pageRequest = PageRequest.of(page, this.paginationAmount, Sort.Direction.valueOf(direction), order);
-
-        Page<Category> categories = this.categoryService.findAll(pageRequest);
-        Page<CategoryDTO> categoryDTOs = categories.map(CategoryDTO::new);
-
-        response.setData(categoryDTOs);
         return ResponseEntity.ok(response);
     }
 }

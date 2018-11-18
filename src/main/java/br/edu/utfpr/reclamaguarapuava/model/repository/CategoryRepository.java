@@ -12,6 +12,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     Optional<Category> findByName(String name);
 
-    @Query("select categories from Category categories where categories.name like %:name%")
-    List<Category> findAllByName(@Param("name") String name);
+    List<Category> findAllByName(String name);
 }
