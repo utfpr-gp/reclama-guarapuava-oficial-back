@@ -1,7 +1,6 @@
 package br.edu.utfpr.reclamaguarapuava.model;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,11 +8,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,13 +22,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "occurrence_tb")
-public class Occurrence implements Serializable {
+@Table(name = "liked_noliked")
+public class LikedNoliked implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public enum OccurrenceStatus {
-        SOLVED, UNRESOLVED, URGENT
+    public enum Op {
+        LIKED, NOLIKED
     }
 
     @Id
@@ -42,21 +37,12 @@ public class Occurrence implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private OccurrenceStatus status;
-
-    @Column(columnDefinition = "BIGINT")
-    private Long view_count;
+    private Op op;
 
     @ManyToOne
-    private Address address;
-
-    @ManyToOne
-    private Problem problem;
+    private Occurrence occurrence;
 
     @ManyToOne
     private User user;
-
-    @OneToOne
-    private Photo photo;
 
 }
