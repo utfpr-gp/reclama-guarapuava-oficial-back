@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "comment_tb")
+@Table(name = "comment")
 public class Comment implements Serializable {
 
     private static final long serialVersionUID = 1L;
