@@ -48,7 +48,7 @@ public class Problem implements Serializable {
 
     public Problem(String name, Date date_created, String description, Category category) {
         this.name = name;
-        this.date_created = date_created;
+        this.dateCreated = date_created;
         this.description = description;
         this.category = category;
     }
@@ -57,7 +57,7 @@ public class Problem implements Serializable {
         this.id = problemDTO.getId();
         this.name = problemDTO.getName();
         this.description = problemDTO.getDescription();
-        this.date_created = problemDTO.getDate_created();
+        this.dateCreated = problemDTO.getDateCreated();
         this.category = problemDTO.getCategory();
     }
 
@@ -65,7 +65,7 @@ public class Problem implements Serializable {
         this.id = problemDTO.getId();
         this.name = problemDTO.getName();
         this.description = problemDTO.getDescription();
-        this.date_created = problemDTO.getDate_created();
+        this.dateCreated = problemDTO.getDateCreated();
         this.category = problemDTO.getCategory();
     }
 }

@@ -18,7 +18,7 @@ public class ProblemDTO {
     @Length(min = 2, max = 100, message = "O nome do problema deve conter no mínimo 2 e máximo 100 caracteres.")
     private String name;
 
-    private Date date_created;
+    private Date dateCreated;
 
     private String description;
 
@@ -29,7 +29,7 @@ public class ProblemDTO {
         this.name = problem.getName();
         this.description = problem.getDescription();
         this.category = problem.getCategory();
-        this.date_created = problem.getDate_created();
+        this.dateCreated = problem.getDateCreated();
     }
 
     public ProblemDTO(Optional<Problem> problem) {
@@ -37,6 +37,6 @@ public class ProblemDTO {
         this.name = problem.get().getName();
         this.description = problem.get().getDescription();
         this.category = problem.get().getCategory();
-        this.date_created = problem.get().getDate_created();
+        this.dateCreated = problem.get().getDateCreated();
     }
 }
