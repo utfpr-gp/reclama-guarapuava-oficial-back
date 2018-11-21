@@ -3,12 +3,13 @@ package br.edu.utfpr.reclamaguarapuava.model;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import br.edu.utfpr.reclamaguarapuava.model.dto.CategoryDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,27 +19,30 @@ import lombok.NoArgsConstructor;
  * @author Carlos Henrique
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "category")
-public class Category implements Serializable {
+@Table(name = "liked_noliked")
+public class LikedNoliked implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    public enum Op {
+        LIKED, NOLIKED
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 45, nullable = false)
-    private String name;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Op op;
 
-    public Category(CategoryDTO categoryDTO) {
-        this.id = categoryDTO.getId();
-        this.name = categoryDTO.getName();
-    }
+    @ManyToOne
+    private Occurrence occurrence;
 
-    public void update(CategoryDTO categoryDTO) {
-        this.id = categoryDTO.getId();
-        this.name = categoryDTO.getName();
-    }
+    @ManyToOne
+    private User user;
+
 }

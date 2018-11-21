@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "photo_tb")
+@Table(name = "photo")
 public class Photo implements Serializable {
 
     private static final long serialVersionUID = 1L;

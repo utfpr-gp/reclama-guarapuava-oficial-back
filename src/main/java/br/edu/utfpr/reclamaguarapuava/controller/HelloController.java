@@ -20,7 +20,6 @@ public class HelloController {
 
     @RequestMapping(method = GET)
     public String sayHello() {
-        int f = 10;
         return "Hello World Spring";
     }
 

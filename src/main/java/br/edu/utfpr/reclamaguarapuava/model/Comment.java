@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "comment_tb")
+@Table(name = "comment")
 public class Comment implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,8 +30,8 @@ public class Comment implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Date date_comment_created;
+    @Column(name = "date_comment_created", nullable = false)
+    private Date dateCommentCreated;
 
     @ManyToOne
     private User user;

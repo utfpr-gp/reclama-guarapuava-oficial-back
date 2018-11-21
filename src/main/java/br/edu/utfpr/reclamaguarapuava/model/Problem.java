@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @Entity
-@Table(name = "problem_tb")
+@Table(name = "problem")
 public class Problem implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -33,8 +33,8 @@ public class Problem implements Serializable {
 
     private String name;
 
-    @Column(nullable = false)
-    private Date date_created;
+    @Column(name = "date_created", nullable = false)
+    private Date dateCreated;
 
     @Column(columnDefinition = "TEXT")
     private String description;
