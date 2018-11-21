@@ -23,7 +23,12 @@ public class NewUserDTO {
 //    @CPF
     private String cpf;
 
+    @NotBlank
     private String genre;
+
+    @NotBlank
     private LocalDate birthday;
+
+    @NotBlank
     private Long cityId;
 }
