@@ -32,8 +32,8 @@ public class Problem implements Serializable {
 
     private String name;
 
-    @Column(nullable = false)
-    private Date date_created;
+    @Column(name = "date_created", nullable = false)
+    private Date dateCreated;
 
     @Column(columnDefinition = "TEXT")
     private String description;
