@@ -63,7 +63,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .csrf().disable()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                    .addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+                    .addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil))
+                    .addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 
     }
 
