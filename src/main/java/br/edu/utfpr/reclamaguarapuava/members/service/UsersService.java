@@ -6,8 +6,10 @@ import br.edu.utfpr.reclamaguarapuava.members.repositories.UserRepository;
 import br.edu.utfpr.reclamaguarapuava.occurrences.entities.City;
 import br.edu.utfpr.reclamaguarapuava.occurrences.service.AddressService;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -20,10 +22,13 @@ public class UsersService {
 
     private final UserRepository userRepository;
     private final AddressService addressService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UsersService(UserRepository repository, AddressService addressService) {
+    @Autowired
+    public UsersService(UserRepository repository, AddressService addressService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = repository;
         this.addressService = addressService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Transactional
@@ -32,7 +37,7 @@ public class UsersService {
         user.setName(newUserDTO.getName());
         user.setEmail(newUserDTO.getEmail());
         user.setBirthday(newUserDTO.getBirthday());
-        user.setPassword(newUserDTO.getPassword());
+        user.setPassword(bCryptPasswordEncoder.encode(newUserDTO.getPassword()));
         user.setCpf(newUserDTO.getCpf());
 
         City city = addressService.findCityById(newUserDTO.getCityId());

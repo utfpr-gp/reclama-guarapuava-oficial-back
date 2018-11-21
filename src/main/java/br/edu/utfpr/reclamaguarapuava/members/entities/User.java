@@ -2,14 +2,15 @@ package br.edu.utfpr.reclamaguarapuava.members.entities;
 
 import br.edu.utfpr.reclamaguarapuava.occurrences.entities.City;
 import br.edu.utfpr.reclamaguarapuava.structures.EntityApplication;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -26,7 +27,8 @@ public class User extends EntityApplication {
     @Column(length = 100, unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column(length = 25)
@@ -40,4 +42,21 @@ public class User extends EntityApplication {
 
     @ManyToOne
     private City city;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "profiles_users_tb")
+    private Set<Integer> profiles = new HashSet<>();
+
+    public Set<Profile> getProfiles() {
+        return profiles.stream().map(Profile::toEnum).collect(Collectors.toSet());
+    }
+
+    public void addProfile(Profile profile) {
+        this.profiles.add(profile.getCode());
+    }
+
+    @PrePersist
+    private void addUserProfile() {
+        this.addProfile(Profile.USER);
+    }
 }
