@@ -2,7 +2,6 @@ package br.edu.utfpr.reclamaguarapuava.controller;
 
 import br.edu.utfpr.reclamaguarapuava.model.Category;
 import br.edu.utfpr.reclamaguarapuava.model.dto.CategoryDTO;
-import br.edu.utfpr.reclamaguarapuava.model.repository.CategoryRepository;
 import br.edu.utfpr.reclamaguarapuava.service.CategoryService;
 import br.edu.utfpr.reclamaguarapuava.service.OccurrenceService;
 import br.edu.utfpr.reclamaguarapuava.service.ProblemService;
@@ -11,26 +10,21 @@ import org.hibernate.ObjectDeletedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/admin/categorias")
 @CrossOrigin(origins = "*")
-public class CategoryResource {
+public class CategoryController {
 
-    private static final Logger log = LoggerFactory.getLogger(CategoryResource.class);
+    private static final Logger log = LoggerFactory.getLogger(CategoryController.class);
 
     @Autowired
     CategoryService categoryService;
@@ -42,9 +36,13 @@ public class CategoryResource {
     ProblemService problemService;
 
     @GetMapping
-    public ResponseEntity<Response<Page<Category>>> index(Pageable pageable) {
-        Response<Page<Category>> response = new Response<>();
-        response.setData(categoryService.findAll(pageable));
+    public ResponseEntity<Response<Page<CategoryDTO>>> index(Pageable pageable) {
+        Response<Page<CategoryDTO>> response = new Response<>();
+        Page<Category> categories = categoryService.findAll(pageable);
+
+        Page<CategoryDTO> categoryDTOS = categories.map(CategoryDTO::new);
+
+        response.setData(categoryDTOS);
         return ResponseEntity.ok(response);
     }
 

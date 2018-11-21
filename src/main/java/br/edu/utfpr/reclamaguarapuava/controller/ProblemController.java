@@ -1,10 +1,7 @@
 package br.edu.utfpr.reclamaguarapuava.controller;
 
-import br.edu.utfpr.reclamaguarapuava.model.Category;
 import br.edu.utfpr.reclamaguarapuava.model.Problem;
 import br.edu.utfpr.reclamaguarapuava.model.dto.ProblemDTO;
-import br.edu.utfpr.reclamaguarapuava.model.dto.ProblemDTO;
-import br.edu.utfpr.reclamaguarapuava.service.CategoryService;
 import br.edu.utfpr.reclamaguarapuava.service.OccurrenceService;
 import br.edu.utfpr.reclamaguarapuava.service.ProblemService;
 import br.edu.utfpr.reclamaguarapuava.util.Response;
@@ -12,25 +9,21 @@ import org.hibernate.ObjectDeletedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/admin/problemas")
 @CrossOrigin(origins = "*")
-public class ProblemResource {
+public class ProblemController {
 
-    private static final Logger log = LoggerFactory.getLogger(ProblemResource.class);
+    private static final Logger log = LoggerFactory.getLogger(ProblemController.class);
 
     @Autowired
     OccurrenceService occurrenceService;
@@ -39,9 +32,14 @@ public class ProblemResource {
     ProblemService problemService;
 
     @GetMapping
-    public ResponseEntity<Response<Page<Problem>>> index(Pageable pageable) {
-        Response<Page<Problem>> response = new Response<>();
-        response.setData(problemService.findAll(pageable));
+    public ResponseEntity<Response<Page<ProblemDTO>>> index(Pageable pageable) {
+        Response<Page<ProblemDTO>> response = new Response<>();
+
+        Page<Problem> problems = problemService.findAll(pageable);
+
+        Page<ProblemDTO> problemDTOS = problems.map(ProblemDTO::new);
+
+        response.setData(problemDTOS);
         return ResponseEntity.ok(response);
     }
 
