@@ -1,12 +1,20 @@
 package br.edu.utfpr.reclamaguarapuava.occurrences.service;
 
+import br.edu.utfpr.reclamaguarapuava.members.entities.Profile;
 import br.edu.utfpr.reclamaguarapuava.members.service.UsersService;
 import br.edu.utfpr.reclamaguarapuava.occurrences.entities.Address;
 import br.edu.utfpr.reclamaguarapuava.occurrences.dtos.NewOccurrenceDTO;
 import br.edu.utfpr.reclamaguarapuava.occurrences.entities.Occurrence;
 import br.edu.utfpr.reclamaguarapuava.occurrences.repositories.OccurrenceRepository;
+import br.edu.utfpr.reclamaguarapuava.security.entities.UserDetailsImp;
+import br.edu.utfpr.reclamaguarapuava.security.service.SecurityService;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -35,6 +43,16 @@ public class OccurrenceService {
         occurrence.setUser(usersService.findById(newOccurrenceDTO.getUserId()));
 
         return new ResponseNewOccurrence(repository.save(occurrence));
+    }
+
+    public Page<Occurrence> findByUserId(Long id, Pageable pageable) throws AuthenticationException {
+        UserDetailsImp userDetailsImp = SecurityService.authenticated();
+
+        if (userDetailsImp.hasAdmin() || id.equals(userDetailsImp.getId())) {
+            return repository.findAllByUserId(id, pageable);
+        }
+
+        throw new AuthenticationServiceException("access denied");
     }
 
     @Getter
