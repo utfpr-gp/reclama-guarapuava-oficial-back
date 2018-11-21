@@ -29,7 +29,7 @@ public class JWTUtil {
         });
     }
 
-    String generateToke(String email) {
+    public String generateToke(String email) {
         return Jwts.builder()
                 .setSubject(email)
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))

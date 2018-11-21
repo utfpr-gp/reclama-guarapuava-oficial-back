@@ -1,5 +1,6 @@
 package br.edu.utfpr.reclamaguarapuava.security.entities;
 
+import br.edu.utfpr.reclamaguarapuava.members.entities.Profile;
 import br.edu.utfpr.reclamaguarapuava.members.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -72,5 +73,14 @@ public class UserDetailsImp implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.isEnable;
+    }
+
+    public boolean hasRole(Profile profile) {
+        return this.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals(profile.getDescription()));
+    }
+
+    public boolean hasAdmin() {
+        return hasRole(Profile.ADMIN);
     }
 }
