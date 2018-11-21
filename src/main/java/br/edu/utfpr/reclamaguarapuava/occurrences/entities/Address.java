@@ -10,8 +10,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.edu.utfpr.reclamaguarapuava.occurrences.entities.Neighborhood;
+import br.edu.utfpr.reclamaguarapuava.structures.EntityApplication;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -23,13 +25,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "address_tb")
-public class Address implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+public class Address extends EntityApplication {
 
     @Column(length = 10, nullable = false)
     private Integer number;
