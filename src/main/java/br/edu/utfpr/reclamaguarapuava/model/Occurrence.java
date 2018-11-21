@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "occurrence_db")
+@Table(name = "occurrence")
 public class Occurrence implements Serializable {
 
     private static final long serialVersionUID = 1L;
