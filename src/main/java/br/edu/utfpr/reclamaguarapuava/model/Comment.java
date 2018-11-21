@@ -30,8 +30,8 @@ public class Comment implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Date date_comment_created;
+    @Column(name = "date_comment_created", nullable = false)
+    private Date dateCommentCreated;
 
     @ManyToOne
     private User user;
