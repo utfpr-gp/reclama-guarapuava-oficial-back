@@ -26,10 +26,10 @@ public class UsersService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UsersService(UserRepository repository, AddressService addressService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UsersService(UserRepository repository, AddressService addressService) {
         this.userRepository = repository;
         this.addressService = addressService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
 
     @Transactional

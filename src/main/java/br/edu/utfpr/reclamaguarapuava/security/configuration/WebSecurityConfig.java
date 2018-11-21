@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
@@ -37,11 +38,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final Environment environment;
     private final UserDetailsService userDetailsService;
+    private final JWTUtil jwtUtil;
 
     @Autowired
-    public WebSecurityConfig(Environment environment, @Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
+    public WebSecurityConfig(Environment environment, @Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService, JWTUtil jwtUtil) {
         this.environment = environment;
         this.userDetailsService = userDetailsService;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
@@ -57,7 +60,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .cors()
                 .and()
-                    .csrf().disable();
+                    .csrf().disable()
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                    .addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 
     }
 
