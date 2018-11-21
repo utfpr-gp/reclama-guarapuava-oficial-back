@@ -41,9 +41,6 @@ A API está sendo desenvolvida pela turma do segundo semestre de 2018 da discipl
 - Entrar na raiz do projeto via prompt de comando e instalar as dependência definidas no arquivo `pom.xml` do Maven
   - Digite o comando `mvn clean install`
 - Criar um novo banco de dados no MySQL com o nome `reclama_guarapuava_db`
-  - Editar o arquivo `src/main/resources/META-INF/persistence.xml` com as configurações de acesso ao banco de dados `natal_dos_sonhos`
-    - Alterar a propriedade `javax.persistence.jdbc.user` para o usuário correspondente ao MySQL
-    - Alterar a propriedade `javax.persistence.jdbc.password` para a senha correspondente ao MySQL
 - Opcionalmente, usar o banco de dados em memória alterando o arquivo `application.properties` para uso do perfil `test`
   - Já está configurado com o login e senha padrão
 - Executar o projeto como Spring Boot.
