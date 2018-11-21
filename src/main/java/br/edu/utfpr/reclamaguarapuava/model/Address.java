@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "address_tb")
+@Table(name = "address")
 public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
