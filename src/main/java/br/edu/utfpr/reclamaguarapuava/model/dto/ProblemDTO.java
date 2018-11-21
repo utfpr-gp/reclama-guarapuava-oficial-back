@@ -2,12 +2,14 @@ package br.edu.utfpr.reclamaguarapuava.model.dto;
 
 import br.edu.utfpr.reclamaguarapuava.model.Category;
 import br.edu.utfpr.reclamaguarapuava.model.Problem;
+import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 import java.util.Optional;
 
+@Data
 public class ProblemDTO {
 
     private Long id;
@@ -21,17 +23,6 @@ public class ProblemDTO {
     private String description;
 
     private Category category;
-
-    public ProblemDTO() {
-    }
-
-    public ProblemDTO(Long id, String name, String description, Category category, Date date_created) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.category = category;
-        this.date_created = date_created;
-    }
 
     public ProblemDTO(Problem problem) {
         this.id = problem.getId();
@@ -47,45 +38,5 @@ public class ProblemDTO {
         this.description = problem.get().getDescription();
         this.category = problem.get().getCategory();
         this.date_created = problem.get().getDate_created();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getDate_created() {
-        return date_created;
-    }
-
-    public void setDate_created(Date date_created) {
-        this.date_created = date_created;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
     }
 }
