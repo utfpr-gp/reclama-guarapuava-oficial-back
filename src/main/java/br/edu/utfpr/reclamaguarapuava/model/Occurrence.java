@@ -40,8 +40,8 @@ public class Occurrence implements Serializable {
     @Column(nullable = false)
     private OccurrenceStatus status;
 
-    @Column(columnDefinition = "BIGINT")
-    private Long view_count;
+    @Column(name = "view_count", columnDefinition = "BIGINT")
+    private Long viewCount;
 
     @ManyToOne
     private Address address;
