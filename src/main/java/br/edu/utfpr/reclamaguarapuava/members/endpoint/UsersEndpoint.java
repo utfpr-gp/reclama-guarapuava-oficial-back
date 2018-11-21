@@ -28,7 +28,7 @@ public class UsersEndpoint {
         return new ResponseEntity<>(service.findAll(pageable), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<UsersService.ResponseNewUser> newUser(@Valid @RequestBody NewUserDTO newUserDTO) {
         return new ResponseEntity<>(service.addNewUser(newUserDTO), HttpStatus.CREATED);
     }
