@@ -41,8 +41,8 @@ public class User implements Serializable {
     @Column(length = 25)
     private String genre;
 
-    @Column(nullable = false)
-    private Date date_birth;
+    @Column(name = "date_birth", nullable = false)
+    private Date dateBirth;
 
     @Column(length = 11, unique = true, nullable = false)
     private String cpf;
