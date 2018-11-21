@@ -16,6 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.persistence.EntityNotFoundException;
 import java.net.URI;
+import java.util.Optional;
 
 @Service
 public class UsersService {
@@ -53,6 +54,10 @@ public class UsersService {
 
     public User findById(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("user not found"));
+    }
+
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Getter

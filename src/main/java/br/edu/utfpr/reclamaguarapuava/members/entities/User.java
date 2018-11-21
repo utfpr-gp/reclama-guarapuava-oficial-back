@@ -47,6 +47,18 @@ public class User extends EntityApplication {
     @CollectionTable(name = "profiles_users_tb")
     private Set<Integer> profiles = new HashSet<>();
 
+    @Column
+    private Boolean isAccountNonExpired = Boolean.TRUE;
+
+    @Column
+    private Boolean isAccountNonLocked = Boolean.TRUE;
+
+    @Column
+    private Boolean isCredentialsNonExpired = Boolean.TRUE;
+
+    @Column
+    private Boolean isEnable = Boolean.TRUE;
+
     public Set<Profile> getProfiles() {
         return profiles.stream().map(Profile::toEnum).collect(Collectors.toSet());
     }
