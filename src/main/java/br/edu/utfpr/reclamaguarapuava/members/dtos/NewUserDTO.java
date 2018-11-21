@@ -1,9 +1,7 @@
 package br.edu.utfpr.reclamaguarapuava.members.dtos;
 
-import br.edu.utfpr.reclamaguarapuava.model.City;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -22,10 +20,10 @@ public class NewUserDTO {
     @NotBlank
     @Size(min = 8, max = 20)
     private String password;
-    @CPF
+//    @CPF
     private String cpf;
 
     private String genre;
     private LocalDate birthday;
-    private City city;
+    private Long cityId;
 }
