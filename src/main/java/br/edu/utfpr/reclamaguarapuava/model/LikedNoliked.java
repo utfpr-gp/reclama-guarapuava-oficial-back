@@ -1,14 +1,11 @@
 package br.edu.utfpr.reclamaguarapuava.model;
 
-import java.io.Serializable;
+import br.edu.utfpr.reclamaguarapuava.util.EntityApplication;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -26,17 +23,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "liked_noliked")
-public class LikedNoliked implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class LikedNoliked extends EntityApplication {
 
     public enum Op {
         LIKED, NOLIKED
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

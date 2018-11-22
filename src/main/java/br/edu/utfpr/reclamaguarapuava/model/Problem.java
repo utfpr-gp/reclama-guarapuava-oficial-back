@@ -1,36 +1,24 @@
 package br.edu.utfpr.reclamaguarapuava.model;
 
-import java.io.Serializable;
+import br.edu.utfpr.reclamaguarapuava.util.EntityApplication;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
+import br.edu.utfpr.reclamaguarapuava.model.dto.ProblemDTO;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  *
  * @author Carlos Henrique
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "problem")
-public class Problem implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Problem extends EntityApplication {
 
     private String name;
 
@@ -43,4 +31,30 @@ public class Problem implements Serializable {
     @ManyToOne
     private Category category;
 
+    public Problem() {
+
+    }
+
+    public Problem(String name, Date date_created, String description, Category category) {
+        this.name = name;
+        this.dateCreated = date_created;
+        this.description = description;
+        this.category = category;
+    }
+
+    public Problem(ProblemDTO problemDTO) {
+        this.id = problemDTO.getId();
+        this.name = problemDTO.getName();
+        this.description = problemDTO.getDescription();
+        this.dateCreated = problemDTO.getDateCreated();
+        this.category = problemDTO.getCategory();
+    }
+
+    public void update(ProblemDTO problemDTO) {
+        this.id = problemDTO.getId();
+        this.name = problemDTO.getName();
+        this.description = problemDTO.getDescription();
+        this.dateCreated = problemDTO.getDateCreated();
+        this.category = problemDTO.getCategory();
+    }
 }

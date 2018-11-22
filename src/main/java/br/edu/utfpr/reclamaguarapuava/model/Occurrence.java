@@ -1,9 +1,14 @@
 package br.edu.utfpr.reclamaguarapuava.model;
 
-import java.io.Serializable;
-import java.util.List;
+import br.edu.utfpr.reclamaguarapuava.util.EntityApplication;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
@@ -19,17 +24,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "occurrence")
-public class Occurrence implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Occurrence extends EntityApplication {
 
     public static enum OccurrenceStatus {
         SOLVED, UNRESOLVED, URGENT
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

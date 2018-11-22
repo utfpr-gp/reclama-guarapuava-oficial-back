@@ -110,4 +110,12 @@ public class OccurrenceService {
                     .buildAndExpand(occurrence.getId()).toUri();
         }
     }
+    
+    public List<Occurrence> findByCategory(Long id) {
+        return repository.findAllByProblem_CategoryId(id);
+    }
+
+    public List<Occurrence> findByProblem(Long id) {
+        return repository.findAllByProblemId(id);
+    }
 }
