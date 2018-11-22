@@ -1,6 +1,7 @@
 package br.edu.utfpr.reclamaguarapuava.model.service;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import br.edu.utfpr.reclamaguarapuava.model.repository.OccurrenceRepository;
 import br.edu.utfpr.reclamaguarapuava.security.entities.UserDetailsImp;
 import br.edu.utfpr.reclamaguarapuava.security.service.SecurityService;
 import lombok.Getter;
+
+import static br.edu.utfpr.reclamaguarapuava.model.Occurrence.OccurrenceStatus.*;
 
 @Service
 public class OccurrenceService {
@@ -54,6 +57,12 @@ public class OccurrenceService {
         throw new AuthenticationServiceException("access denied");
     }
 
+    @Transactional(readOnly = true)
+    public Page<Occurrence> findByNeighborhoodAndCategory(Long neighborhoodId, Long categoryId, Pageable pageable) {
+        List<Occurrence.OccurrenceStatus> filter = Arrays.asList(URGENT, UNRESOLVED);
+        return repository.findAllByAddress_NeighborhoodIdAndProblem_CategoryIdAndStatusIn(neighborhoodId, categoryId, filter, pageable);
+    }
+
     @Getter
     public class ResponseNewOccurrence {
         private final Occurrence occurrence;
@@ -61,10 +70,11 @@ public class OccurrenceService {
 
         public ResponseNewOccurrence(Occurrence occurrence) {
             this.occurrence = occurrence;
-            this.uriOfOccurrence = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(occurrence.getId()).toUri();
+            this.uriOfOccurrence = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
+                    .buildAndExpand(occurrence.getId()).toUri();
         }
     }
-    
+
     public List<Occurrence> findByCategory(Long id) {
         return repository.findAllByProblem_CategoryId(id);
     }
