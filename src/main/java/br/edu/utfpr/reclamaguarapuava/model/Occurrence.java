@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -14,10 +15,9 @@ import lombok.NoArgsConstructor;
  * @author Carlos Henrique
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "occurrence")
+@EqualsAndHashCode(callSuper = true)
 public class Occurrence extends EntityApplication {
 
     public static enum OccurrenceStatus {

@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -19,10 +20,9 @@ import lombok.NoArgsConstructor;
  * @author Carlos Henrique
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "liked_noliked")
+@EqualsAndHashCode(callSuper = true)
 public class LikedNoliked extends EntityApplication {
 
     public enum Op {
