@@ -1,13 +1,15 @@
 package br.edu.utfpr.reclamaguarapuava.security.entities;
 
-import br.edu.utfpr.reclamaguarapuava.members.entities.Profile;
-import br.edu.utfpr.reclamaguarapuava.members.entities.User;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
+import br.edu.utfpr.reclamaguarapuava.model.Profile;
+import br.edu.utfpr.reclamaguarapuava.model.User;
 
 public class UserDetailsImp implements UserDetails {
     private Long id;

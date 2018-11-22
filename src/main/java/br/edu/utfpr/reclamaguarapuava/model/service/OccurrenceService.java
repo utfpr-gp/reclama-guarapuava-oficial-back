@@ -1,34 +1,32 @@
-package br.edu.utfpr.reclamaguarapuava.occurrences.service;
+package br.edu.utfpr.reclamaguarapuava.model.service;
 
-import br.edu.utfpr.reclamaguarapuava.members.entities.Profile;
-import br.edu.utfpr.reclamaguarapuava.members.service.UsersService;
-import br.edu.utfpr.reclamaguarapuava.occurrences.entities.Address;
-import br.edu.utfpr.reclamaguarapuava.occurrences.dtos.NewOccurrenceDTO;
-import br.edu.utfpr.reclamaguarapuava.occurrences.entities.Occurrence;
-import br.edu.utfpr.reclamaguarapuava.occurrences.repositories.OccurrenceRepository;
-import br.edu.utfpr.reclamaguarapuava.security.entities.UserDetailsImp;
-import br.edu.utfpr.reclamaguarapuava.security.service.SecurityService;
-import lombok.Getter;
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
+import br.edu.utfpr.reclamaguarapuava.model.Address;
+import br.edu.utfpr.reclamaguarapuava.model.Occurrence;
+import br.edu.utfpr.reclamaguarapuava.model.dto.NewOccurrenceDTO;
+import br.edu.utfpr.reclamaguarapuava.model.repository.OccurrenceRepository;
+import br.edu.utfpr.reclamaguarapuava.security.entities.UserDetailsImp;
+import br.edu.utfpr.reclamaguarapuava.security.service.SecurityService;
+import lombok.Getter;
 
 @Service
 public class OccurrenceService {
     private final OccurrenceRepository repository;
-    private final UsersService usersService;
+    private final UserService usersService;
     private final AddressService addressService;
 
     @Autowired
-    public OccurrenceService(OccurrenceRepository repository, UsersService usersService, AddressService addressService) {
+    public OccurrenceService(OccurrenceRepository repository, UserService usersService, AddressService addressService) {
         this.repository = repository;
         this.usersService = usersService;
         this.addressService = addressService;

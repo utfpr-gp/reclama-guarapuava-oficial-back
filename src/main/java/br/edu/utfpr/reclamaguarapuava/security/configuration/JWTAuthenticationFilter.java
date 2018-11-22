@@ -1,19 +1,22 @@
 package br.edu.utfpr.reclamaguarapuava.security.configuration;
 
-import br.edu.utfpr.reclamaguarapuava.security.dtos.CredentialsDTO;
-import br.edu.utfpr.reclamaguarapuava.security.entities.UserDetailsImp;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.edu.utfpr.reclamaguarapuava.security.dtos.CredentialsDTO;
+import br.edu.utfpr.reclamaguarapuava.security.entities.UserDetailsImp;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 

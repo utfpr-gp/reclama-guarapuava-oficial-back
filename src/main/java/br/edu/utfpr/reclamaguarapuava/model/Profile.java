@@ -1,4 +1,4 @@
-package br.edu.utfpr.reclamaguarapuava.members.entities;
+package br.edu.utfpr.reclamaguarapuava.model;
 
 public enum Profile {
     ADMIN(1, "ROLE_ADMIN"), USER(2, "ROLE_USER"), MANAGER(3, "ROLE_MANAGER");

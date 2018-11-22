@@ -1,20 +1,21 @@
 package br.edu.utfpr.reclamaguarapuava.security.service;
 
-import br.edu.utfpr.reclamaguarapuava.members.entities.User;
-import br.edu.utfpr.reclamaguarapuava.members.service.UsersService;
-import br.edu.utfpr.reclamaguarapuava.security.entities.UserDetailsImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import br.edu.utfpr.reclamaguarapuava.model.User;
+import br.edu.utfpr.reclamaguarapuava.model.service.UserService;
+import br.edu.utfpr.reclamaguarapuava.security.entities.UserDetailsImp;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final UsersService usersService;
+    private final UserService usersService;
 
     @Autowired
-    public UserDetailsServiceImpl(UsersService usersService) {
+    public UserDetailsServiceImpl(UserService usersService) {
         this.usersService = usersService;
     }
 

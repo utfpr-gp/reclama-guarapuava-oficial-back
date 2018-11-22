@@ -1,13 +1,15 @@
-package br.edu.utfpr.reclamaguarapuava.occurrences.dtos;
-
-import lombok.Getter;
-import lombok.Setter;
+package br.edu.utfpr.reclamaguarapuava.model.dto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@Getter
-@Setter
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class AddressDTO {
     @NotBlank
     private Integer number;
