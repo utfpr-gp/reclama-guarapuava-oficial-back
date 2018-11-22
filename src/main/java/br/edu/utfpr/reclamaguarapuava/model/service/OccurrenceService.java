@@ -1,6 +1,7 @@
 package br.edu.utfpr.reclamaguarapuava.model.service;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -62,5 +63,13 @@ public class OccurrenceService {
             this.occurrence = occurrence;
             this.uriOfOccurrence = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(occurrence.getId()).toUri();
         }
+    }
+    
+    public List<Occurrence> findByCategory(Long id) {
+        return repository.findAllByProblem_CategoryId(id);
+    }
+
+    public List<Occurrence> findByProblem(Long id) {
+        return repository.findAllByProblemId(id);
     }
 }
