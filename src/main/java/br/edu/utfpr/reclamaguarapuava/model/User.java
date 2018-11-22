@@ -1,59 +1,85 @@
 package br.edu.utfpr.reclamaguarapuava.model;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import br.edu.utfpr.reclamaguarapuava.security.ProfileEnum;
-import java.io.Serializable;
-import java.util.Date;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import br.edu.utfpr.reclamaguarapuava.util.EntityApplication;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author Carlos Henrique
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "user")
-public class User implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+@EqualsAndHashCode(callSuper = true)
+public class User extends EntityApplication {
     @Column(nullable = false)
     private String name;
 
     @Column(length = 100, unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column(length = 25)
     private String genre;
 
-    @Column(name = "date_birth", nullable = false)
-    private Date dateBirth;
+    @Column(nullable = false)
+    private LocalDate birthday;
 
     @Column(length = 11, unique = true, nullable = false)
     private String cpf;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ProfileEnum profile;
-
     @ManyToOne
     private City city;
 
-    private Date created;
-    private Date updated;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "profiles_users_tb")
+    private Set<Integer> profiles = new HashSet<>();
+
+    @Column
+    private Boolean isAccountNonExpired = Boolean.TRUE;
+
+    @Column
+    private Boolean isAccountNonLocked = Boolean.TRUE;
+
+    @Column
+    private Boolean isCredentialsNonExpired = Boolean.TRUE;
+
+    @Column
+    private Boolean isEnable = Boolean.TRUE;
+
+    public Set<Profile> getProfiles() {
+        return profiles.stream().map(Profile::toEnum).collect(Collectors.toSet());
+    }
+
+    public void addProfile(Profile profile) {
+        this.profiles.add(profile.getCode());
+    }
+
+    @PrePersist
+    private void addUserProfile() {
+        this.addProfile(Profile.USER);
+    }
 }

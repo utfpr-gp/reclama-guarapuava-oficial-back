@@ -1,11 +1,11 @@
-package br.edu.utfpr.reclamaguarapuava.members.service;
+package br.edu.utfpr.reclamaguarapuava.model.service;
 
-import br.edu.utfpr.reclamaguarapuava.members.dtos.NewUserDTO;
-import br.edu.utfpr.reclamaguarapuava.members.entities.User;
-import br.edu.utfpr.reclamaguarapuava.members.repositories.UserRepository;
-import br.edu.utfpr.reclamaguarapuava.occurrences.entities.City;
-import br.edu.utfpr.reclamaguarapuava.occurrences.service.AddressService;
-import lombok.Getter;
+
+import java.net.URI;
+import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,19 +14,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.persistence.EntityNotFoundException;
-import java.net.URI;
-import java.util.Optional;
+import br.edu.utfpr.reclamaguarapuava.model.City;
+import br.edu.utfpr.reclamaguarapuava.model.User;
+import br.edu.utfpr.reclamaguarapuava.model.dto.NewUserDTO;
+import br.edu.utfpr.reclamaguarapuava.model.repository.UserRepository;
+import lombok.Getter;
 
 @Service
-public class UsersService {
+public class UserService {
 
     private final UserRepository userRepository;
     private final AddressService addressService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UsersService(UserRepository repository, AddressService addressService) {
+    public UserService(UserRepository repository, AddressService addressService) {
         this.userRepository = repository;
         this.addressService = addressService;
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -34,7 +36,7 @@ public class UsersService {
 
     @Transactional
     public ResponseNewUser addNewUser(NewUserDTO newUserDTO) {
-        User user = new User();
+        User user = new User();        
         user.setName(newUserDTO.getName());
         user.setEmail(newUserDTO.getEmail());
         user.setBirthday(newUserDTO.getBirthday());
@@ -42,7 +44,7 @@ public class UsersService {
         user.setCpf(newUserDTO.getCpf());
 
         City city = addressService.findCityById(newUserDTO.getCityId());
-        user.setCity(city);
+        user.setCity(city);        
 
         return new ResponseNewUser(userRepository.save(user));
     }

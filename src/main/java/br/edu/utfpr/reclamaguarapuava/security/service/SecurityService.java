@@ -1,10 +1,11 @@
 package br.edu.utfpr.reclamaguarapuava.security.service;
 
-import br.edu.utfpr.reclamaguarapuava.security.configuration.JWTUtil;
-import br.edu.utfpr.reclamaguarapuava.security.entities.UserDetailsImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import br.edu.utfpr.reclamaguarapuava.security.configuration.JWTUtil;
+import br.edu.utfpr.reclamaguarapuava.security.entities.UserDetailsImp;
 
 @Service
 public class SecurityService {
