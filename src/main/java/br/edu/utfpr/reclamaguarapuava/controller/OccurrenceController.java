@@ -2,18 +2,14 @@ package br.edu.utfpr.reclamaguarapuava.controller;
 
 import javax.validation.Valid;
 
+import br.edu.utfpr.reclamaguarapuava.model.dto.LikedNoLikedDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.edu.utfpr.reclamaguarapuava.model.Occurrence;
 import br.edu.utfpr.reclamaguarapuava.model.dto.NewOccurrenceDTO;
@@ -29,20 +25,36 @@ public class OccurrenceController {
         this.service = service;
     }
 
+    @GetMapping("/bairro/{neighborhoodId}/categoria/{categoryId}")
+    public ResponseEntity<Page<Occurrence>> getOccurencesByFilterTo(@PathVariable("neighborhoodId") Long neighborhoodId, @PathVariable("categoryId") Long categoryId, Pageable pageable) {
+        return new ResponseEntity<>(service.findByNeighborhoodAndCategory(neighborhoodId, categoryId, pageable), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<Occurrence>> getAllOccurrence(Pageable pageable) {
+        return new ResponseEntity<>(service.findAll(pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Occurrence> getOccurrenceById(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
+    }
+
     @PreAuthorize("hasAnyRole('USER')")
     @GetMapping("/usuario/{id}")
     public ResponseEntity<Page<Occurrence>> getOccurrencesByUser(@PathVariable("id") Long id, Pageable pageable) {
         return new ResponseEntity<>(service.findByUserId(id, pageable), HttpStatus.OK);
     }
 
-    @GetMapping("/bairro/{neighborhoodId}/categoria/{categoryId}")
-    public ResponseEntity<Page<Occurrence>> getOccurencesByFilterTo(@PathVariable("neighborhoodId") Long neighborhoodId, @PathVariable("categoryId") Long categoryId, Pageable pageable) {
-        return new ResponseEntity<>(service.findByNeighborhoodAndCategory(neighborhoodId, categoryId, pageable), HttpStatus.OK);
+    @PreAuthorize("hasAnyRole('USER')")
+    @PostMapping
+    public ResponseEntity<OccurrenceService.ResponseOccurrence> addNewOccurrence(@Valid @RequestBody NewOccurrenceDTO newOccurrenceDTO) {
+        return new ResponseEntity<>(service.newOccurrence(newOccurrenceDTO), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAnyRole('USER')")
-    @PostMapping
-    public ResponseEntity<OccurrenceService.ResponseNewOccurrence> addNewOccurrence(@Valid @RequestBody NewOccurrenceDTO newOccurrenceDTO) {
-        return new ResponseEntity<>(service.newOccurrence(newOccurrenceDTO), HttpStatus.CREATED);
+    @PutMapping("/feedback")
+    public ResponseEntity<OccurrenceService.ResponseOccurrence> addFeedbackUser(@Valid @RequestBody LikedNoLikedDTO likedNoLikedDTo) {
+        return new ResponseEntity<>(service.addFeedbackUser(likedNoLikedDTo), HttpStatus.OK);
     }
 }
