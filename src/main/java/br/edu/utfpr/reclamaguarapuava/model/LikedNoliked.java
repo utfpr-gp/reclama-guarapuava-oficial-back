@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,7 @@ public class LikedNoliked extends EntityApplication {
     @Column(nullable = false)
     private Op op;
 
+    @JsonBackReference
     @ManyToOne
     private Occurrence occurrence;
 
