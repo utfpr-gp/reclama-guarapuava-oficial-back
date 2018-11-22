@@ -31,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     };
 
     private static final String[] PUBLIC_MATCHERS_READ = {
-            "/occurrences"
+            "/ocorrencias/**"
     };
 
     private static final String[] PUBLIC_MATCHERS_WRITE = {
