@@ -7,15 +7,9 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import br.edu.utfpr.reclamaguarapuava.model.Category;
-import br.edu.utfpr.reclamaguarapuava.model.Photo;
-import br.edu.utfpr.reclamaguarapuava.model.User;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class CategoryDTO {
 
     private Long id;

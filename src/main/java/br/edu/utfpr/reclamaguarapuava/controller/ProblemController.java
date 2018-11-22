@@ -1,6 +1,5 @@
 package br.edu.utfpr.reclamaguarapuava.controller;
 
-
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -26,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.edu.utfpr.reclamaguarapuava.model.Problem;
 import br.edu.utfpr.reclamaguarapuava.model.dto.ProblemDTO;
 import br.edu.utfpr.reclamaguarapuava.model.service.ProblemService;
-import br.edu.utfpr.reclamaguarapuava.service.OccurrenceService;
+import br.edu.utfpr.reclamaguarapuava.model.service.OccurrenceService;
 import br.edu.utfpr.reclamaguarapuava.util.Response;
 
 @RestController
