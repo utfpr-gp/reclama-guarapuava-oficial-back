@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import br.edu.utfpr.reclamaguarapuava.model.service.OccurrenceService;
 import org.hibernate.ObjectDeletedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,24 +27,23 @@ import br.edu.utfpr.reclamaguarapuava.model.Category;
 import br.edu.utfpr.reclamaguarapuava.model.dto.CategoryDTO;
 import br.edu.utfpr.reclamaguarapuava.model.service.CategoryService;
 import br.edu.utfpr.reclamaguarapuava.model.service.ProblemService;
-import br.edu.utfpr.reclamaguarapuava.model.service.OccurrenceService;
 import br.edu.utfpr.reclamaguarapuava.util.Response;
 
 @RestController
-@RequestMapping("/api/a/categorias")
-@CrossOrigin(origins = "*")
+@RequestMapping("/api/admin/categorias")
 public class CategoryController {
+    private final CategoryService categoryService;
+    private final OccurrenceService occurrenceService;
+    private final ProblemService problemService;
 
     private static final Logger log = LoggerFactory.getLogger(CategoryController.class);
 
     @Autowired
-    CategoryService categoryService;
-
-    @Autowired
-    OccurrenceService occurrenceService;
-
-    @Autowired
-    ProblemService problemService;
+    public CategoryController(CategoryService categoryService, OccurrenceService occurrenceService, ProblemService problemService) {
+        this.categoryService = categoryService;
+        this.occurrenceService = occurrenceService;
+        this.problemService = problemService;
+    }
 
     @GetMapping
     public ResponseEntity<Response<Page<CategoryDTO>>> index(Pageable pageable) {

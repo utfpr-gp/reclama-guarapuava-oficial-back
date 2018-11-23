@@ -26,8 +26,6 @@ import lombok.NoArgsConstructor;
  * @author Carlos Henrique
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "user")
 @EqualsAndHashCode(callSuper = true)

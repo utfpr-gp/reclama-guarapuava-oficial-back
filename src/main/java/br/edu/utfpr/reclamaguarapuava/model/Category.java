@@ -9,15 +9,17 @@ import javax.persistence.Table;
 import br.edu.utfpr.reclamaguarapuava.model.dto.CategoryDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author Carlos Henrique
  */
 @Data
-@AllArgsConstructor
 @Entity
 @Table(name = "category")
+@EqualsAndHashCode(callSuper = true)
 public class Category extends EntityApplication {
 
     @Column(length = 45, nullable = false)
