@@ -27,7 +27,7 @@ import br.edu.utfpr.reclamaguarapuava.model.Category;
 import br.edu.utfpr.reclamaguarapuava.model.dto.CategoryDTO;
 import br.edu.utfpr.reclamaguarapuava.model.service.CategoryService;
 import br.edu.utfpr.reclamaguarapuava.model.service.ProblemService;
-import br.edu.utfpr.reclamaguarapuava.service.OccurrenceService;
+import br.edu.utfpr.reclamaguarapuava.model.service.OccurrenceService;
 import br.edu.utfpr.reclamaguarapuava.util.Response;
 
 @RestController
