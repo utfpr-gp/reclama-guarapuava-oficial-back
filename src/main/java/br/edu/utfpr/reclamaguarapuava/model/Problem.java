@@ -10,6 +10,7 @@ import javax.persistence.Table;
 
 import br.edu.utfpr.reclamaguarapuava.model.dto.ProblemDTO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  *
@@ -18,6 +19,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "problem")
+@EqualsAndHashCode(callSuper = true)
 public class Problem extends EntityApplication {
 
     private String name;

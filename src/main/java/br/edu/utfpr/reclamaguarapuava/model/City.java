@@ -9,6 +9,7 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -16,10 +17,9 @@ import lombok.NoArgsConstructor;
  * @author Carlos Henrique
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "city")
+@EqualsAndHashCode(callSuper = true)
 public class City extends EntityApplication {
 
     @ManyToOne

@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  *
@@ -15,6 +16,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "state")
+@EqualsAndHashCode(callSuper = true)
 public class State extends EntityApplication {
 
     @Column(nullable = false, length = 50)
