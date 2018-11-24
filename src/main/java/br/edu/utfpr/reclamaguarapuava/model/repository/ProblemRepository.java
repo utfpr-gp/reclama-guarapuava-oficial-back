@@ -14,5 +14,5 @@ public interface ProblemRepository extends JpaRepository<Problem, Long> {
 
     List<Problem> deleteAllByCategoryId(Long id);
 
-    List<Category> findAllByName(String name);
+    List<Problem> findAllByName(String name);
 }
