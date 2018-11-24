@@ -11,9 +11,9 @@ import br.edu.utfpr.reclamaguarapuava.model.Category;
 import br.edu.utfpr.reclamaguarapuava.model.Problem;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
 public class ProblemDTO {
 
     private Long id;
