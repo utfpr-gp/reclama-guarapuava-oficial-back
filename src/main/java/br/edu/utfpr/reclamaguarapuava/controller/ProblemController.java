@@ -26,10 +26,16 @@ import br.edu.utfpr.reclamaguarapuava.model.Problem;
 import br.edu.utfpr.reclamaguarapuava.model.dto.ProblemDTO;
 import br.edu.utfpr.reclamaguarapuava.model.service.ProblemService;
 import br.edu.utfpr.reclamaguarapuava.util.Response;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping("/api/admin/problemas")
+@Api(value = "Problem Controller")
+@CrossOrigin(origins = "*")
 public class ProblemController {
+
     private final OccurrenceService occurrenceService;
     private final ProblemService problemService;
 
@@ -42,6 +48,7 @@ public class ProblemController {
     }
 
     @GetMapping
+    @ApiOperation(value = "Index")
     public ResponseEntity<Response<Page<ProblemDTO>>> index(Pageable pageable) {
         Response<Page<ProblemDTO>> response = new Response<>();
 
@@ -54,6 +61,7 @@ public class ProblemController {
     }
 
     @GetMapping(value = "/{id}")
+    @ApiOperation(value = "Retorna um único Problema")
     public ResponseEntity<Response<ProblemDTO>> getById(@PathVariable Long id) {
         Response<ProblemDTO> response = new Response<>();
 
@@ -71,6 +79,7 @@ public class ProblemController {
     }
 
     @PostMapping
+    @ApiOperation("Cadastra um Problema")
     public ResponseEntity<Response<ProblemDTO>> store(@Valid @RequestBody ProblemDTO dto, BindingResult result) {
         Response<ProblemDTO> response = new Response<>();
 
@@ -100,6 +109,7 @@ public class ProblemController {
     }
 
     @PutMapping(value = "/{id}")
+    @ApiOperation(value = "Atualiza um Problema")
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody ProblemDTO dto, BindingResult result) {
         Response<ProblemDTO> response = new Response<>();
 
@@ -134,6 +144,7 @@ public class ProblemController {
     }
 
     @DeleteMapping(value = "/{id}")
+    @ApiOperation(value = "Deleta um Problema")
     public ResponseEntity<Response<String>> delete(@PathVariable Long id) {
         log.info("Removendo problema com id {}", id);
 
