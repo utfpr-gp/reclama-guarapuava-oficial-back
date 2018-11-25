@@ -26,16 +26,19 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] PUBLIC_MATCHERS = {
-            "/h2-console/**",
-            "/hello"
+        "/h2-console/**",
+        "/hello",
+        "/v2/api-docs",
+        "/swagger-ui.html",
+        "/swagger-resources/**"
     };
 
     private static final String[] PUBLIC_MATCHERS_READ = {
-            "/ocorrencias/**"
+        "/ocorrencias/**"
     };
 
     private static final String[] PUBLIC_MATCHERS_WRITE = {
-            "/users/register"
+        "/users/register"
     };
 
     private final Environment environment;
@@ -56,17 +59,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
-                .antMatchers(HttpMethod.GET,PUBLIC_MATCHERS_READ).permitAll()
+                .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_READ).permitAll()
                 .antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_WRITE).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                    .cors()
+                .cors()
                 .and()
-                    .csrf().disable()
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                    .addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil))
-                    .addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
+                .addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 
     }
 
