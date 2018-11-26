@@ -1,6 +1,5 @@
 package br.edu.utfpr.reclamaguarapuava.controller;
 
-
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -28,10 +27,16 @@ import br.edu.utfpr.reclamaguarapuava.model.dto.CategoryDTO;
 import br.edu.utfpr.reclamaguarapuava.model.service.CategoryService;
 import br.edu.utfpr.reclamaguarapuava.model.service.ProblemService;
 import br.edu.utfpr.reclamaguarapuava.util.Response;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping("/api/admin/categorias")
+@Api(value = "Category Controller")
+@CrossOrigin(origins = "*")
 public class CategoryController {
+
     private final CategoryService categoryService;
     private final OccurrenceService occurrenceService;
     private final ProblemService problemService;
@@ -46,6 +51,7 @@ public class CategoryController {
     }
 
     @GetMapping
+    @ApiOperation(value = "Index")
     public ResponseEntity<Response<Page<CategoryDTO>>> index(Pageable pageable) {
         Response<Page<CategoryDTO>> response = new Response<>();
         Page<Category> categories = categoryService.findAll(pageable);
@@ -57,6 +63,7 @@ public class CategoryController {
     }
 
     @GetMapping(value = "/{id}")
+    @ApiOperation(value = "Retorna uma única categoria")
     public ResponseEntity<Response<CategoryDTO>> getById(@PathVariable Long id) {
         Response<CategoryDTO> response = new Response<>();
 
@@ -74,6 +81,7 @@ public class CategoryController {
     }
 
     @PostMapping
+    @ApiOperation(value = "Cadastra uma categoria")
     public ResponseEntity<Response<CategoryDTO>> store(@Valid @RequestBody CategoryDTO dto, BindingResult result) {
         Response<CategoryDTO> response = new Response<>();
 
@@ -103,6 +111,7 @@ public class CategoryController {
     }
 
     @PutMapping(value = "/{id}")
+    @ApiOperation(value = "Atualiza um categoria")
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody CategoryDTO dto, BindingResult result) {
         Response<CategoryDTO> response = new Response<>();
 
@@ -136,6 +145,7 @@ public class CategoryController {
     }
 
     @DeleteMapping(value = "/{id}")
+    @ApiOperation(value = "Deleta uma categoria")
     public ResponseEntity<Response<String>> delete(@PathVariable Long id) {
         log.info("Removendo categoria com id {}", id);
 

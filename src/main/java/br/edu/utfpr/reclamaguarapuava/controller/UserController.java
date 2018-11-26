@@ -17,9 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 import br.edu.utfpr.reclamaguarapuava.model.User;
 import br.edu.utfpr.reclamaguarapuava.model.dto.NewUserDTO;
 import br.edu.utfpr.reclamaguarapuava.model.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping("/usuarios")
+@Api(value = "User Controller")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     private final UserService service;
@@ -30,17 +35,20 @@ public class UserController {
     }
 
     @GetMapping
+    @ApiOperation(value = "Retorna todos os Usuários")
     public ResponseEntity<Page<User>> getAll(Pageable pageable) {
         return new ResponseEntity<>(service.findAll(pageable), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
+    @ApiOperation("Cadastra um Usuário (ADMIN)")
     public ResponseEntity<UserService.ResponseNewUser> addUser(@Valid @RequestBody NewUserDTO newUserDTO) {
         return new ResponseEntity<>(service.addNewUser(newUserDTO), HttpStatus.CREATED);
     }
 
     @PostMapping("/novo")
+    @ApiOperation("Cadastra um Usuário")
     public ResponseEntity<UserService.ResponseNewUser> newUser(@Valid @RequestBody NewUserDTO newUserDTO) {
         return new ResponseEntity<>(service.addNewUser(newUserDTO), HttpStatus.CREATED);
     }
