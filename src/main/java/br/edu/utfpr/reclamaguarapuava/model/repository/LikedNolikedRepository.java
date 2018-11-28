@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LikedNoLikedRepository extends CrudRepository<LikedNoliked, Long> {
+public interface LikedNolikedRepository extends CrudRepository<LikedNoliked, Long> {
 }

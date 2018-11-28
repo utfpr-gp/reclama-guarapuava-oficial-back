@@ -7,7 +7,6 @@ import java.util.List;
 import br.edu.utfpr.reclamaguarapuava.model.LikedNoliked;
 import br.edu.utfpr.reclamaguarapuava.model.User;
 import br.edu.utfpr.reclamaguarapuava.model.dto.LikedNoLikedDTO;
-import br.edu.utfpr.reclamaguarapuava.model.repository.LikedNoLikedRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,16 +27,17 @@ import lombok.Getter;
 import javax.persistence.EntityNotFoundException;
 
 import static br.edu.utfpr.reclamaguarapuava.model.Occurrence.OccurrenceStatus.*;
+import br.edu.utfpr.reclamaguarapuava.model.repository.LikedNolikedRepository;
 
 @Service
 public class OccurrenceService {
     private final OccurrenceRepository repository;
     private final UserService usersService;
     private final AddressService addressService;
-    private final LikedNoLikedRepository likedNoLikedRepository;
+    private final LikedNolikedRepository likedNoLikedRepository;
 
     @Autowired
-    public OccurrenceService(OccurrenceRepository repository, UserService usersService, AddressService addressService, LikedNoLikedRepository likedNoLikedRepository) {
+    public OccurrenceService(OccurrenceRepository repository, UserService usersService, AddressService addressService, LikedNolikedRepository likedNoLikedRepository) {
         this.repository = repository;
         this.usersService = usersService;
         this.addressService = addressService;
