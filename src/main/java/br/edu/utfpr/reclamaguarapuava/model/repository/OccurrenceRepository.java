@@ -14,7 +14,11 @@ import java.util.List;
 public interface OccurrenceRepository extends JpaRepository<Occurrence, Long>{
 	Page<Occurrence> findAllByUserId(Long id, Pageable pageable);
 
+	Page<Occurrence> findAllByProblem_CategoryId(Long id, Pageable pageable);
+
 	List<Occurrence> findAllByProblem_CategoryId(Long id);
+
+	Page<Occurrence> findAllByProblemId(Long id, Pageable pageable);
 
 	List<Occurrence> findAllByProblemId(Long id);
 

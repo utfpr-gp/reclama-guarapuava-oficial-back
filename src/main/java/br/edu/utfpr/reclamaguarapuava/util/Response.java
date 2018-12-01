@@ -5,60 +5,23 @@
  */
 package br.edu.utfpr.reclamaguarapuava.util;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.edu.utfpr.reclamaguarapuava.model.Occurrence;
+import lombok.Getter;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-public class Response<T> {
-
-    private T data;
-    private List<String> errors;
-
-    public Response() {
-    }
+@Getter
+public class Response<T extends EntityApplication> {
+    private final T data;
+    private final URI entityDetailsUri;
 
     public Response(T data) {
         this.data = data;
+        this.entityDetailsUri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
+                .buildAndExpand(data.getId()).toUri();
     }
-
-    public Response(List<String> errors) {
-        this.errors = errors;
-    }
-
-    public Response(T data, List<String> errors) {
-        this.data = data;
-        this.errors = errors;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
-    public List<String> getErrors() {
-    	if (errors == null) {
-            this.errors = new ArrayList<>();
-        }
-        return errors;
-    }
-
-    public void setErrors(List<String> errors) {
-        this.errors = errors;
-    }
-
-    public void setErrors(BindingResult result) {
-        result.getAllErrors().forEach(error -> this.addError(error.getDefaultMessage()));
-    }
-
-    public void addError(String error) {
-        if (errors == null) {
-            this.errors = new ArrayList<>();
-        }
-        this.errors.add(error);
-    }
-
 }

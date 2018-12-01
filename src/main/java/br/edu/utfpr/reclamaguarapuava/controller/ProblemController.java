@@ -4,13 +4,18 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import br.edu.utfpr.reclamaguarapuava.model.dto.NewProblemDTO;
 import br.edu.utfpr.reclamaguarapuava.model.service.OccurrenceService;
+import br.edu.utfpr.reclamaguarapuava.util.erros.InvalidParamsException;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.hibernate.ObjectDeletedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,127 +52,72 @@ public class ProblemController {
     }
 
     @GetMapping
-    @ApiOperation(value = "Index")
-    public ResponseEntity<Response<Page<ProblemDTO>>> index(Pageable pageable) {
-        Response<Page<ProblemDTO>> response = new Response<>();
-
-        Page<Problem> problems = problemService.findAll(pageable);
-
-        Page<ProblemDTO> problemDTOS = problems.map(ProblemDTO::new);
-
-        response.setData(problemDTOS);
-        return ResponseEntity.ok(response);
+    @ApiOperation(value = "Retorna todos os Problemas", notes = "A lista retornada é paginada")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Quando bem sucedida para todos problemas"),
+            @ApiResponse(code = 403, message = "Acesso negado"),
+            @ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"),
+    })
+    public ResponseEntity<Page<Problem>> findAll(Pageable pageable) {
+        log.debug("Request GET to '/api/v1/admin/problemas' in process");
+        return new ResponseEntity<>(problemService.findAll(pageable), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
     @ApiOperation(value = "Retorna um único Problema")
-    public ResponseEntity<Response<ProblemDTO>> getById(@PathVariable Long id) {
-        Response<ProblemDTO> response = new Response<>();
-
-        Optional<Problem> problem = problemService.findById(id);
-
-        if (!problem.isPresent()) {
-            response.addError("Problema não encontrado");
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        ProblemDTO problemDTO = new ProblemDTO(problem);
-
-        response.setData(problemDTO);
-        return ResponseEntity.ok(response);
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Quando bem sucedida o problemas"),
+            @ApiResponse(code = 403, message = "Acesso negado"),
+            @ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"),
+    })
+    public ResponseEntity<Response<Problem>> getById(@PathVariable Long id) {
+        log.debug("Request GET to '/api/v1/admin/problemas/'" + id + "' in process");
+        return new ResponseEntity<>(problemService.findById(id), HttpStatus.OK);
     }
 
     @PostMapping
     @ApiOperation("Cadastra um Problema")
-    public ResponseEntity<Response<ProblemDTO>> store(@Valid @RequestBody ProblemDTO dto, BindingResult result) {
-        Response<ProblemDTO> response = new Response<>();
-
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Quando bem sucedida registar um novo problema"),
+            @ApiResponse(code = 400, message = "Houve um erro, a requisição está inválida"),
+            @ApiResponse(code = 403, message = "Acesso negado"),
+            @ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"),
+    })
+    public ResponseEntity<Response<Problem>> save(@Valid @RequestBody NewProblemDTO dto, BindingResult result) {
+        log.debug("Request POST to '/api/v1/admin/problemas/' in process");
         if (result.hasErrors()) {
-            response.setErrors(result);
-            return ResponseEntity.badRequest().body(response);
+            throw new InvalidParamsException("Params invalid", result);
         }
-
-        Optional<Problem> problemOptional = problemService.findByName(dto.getName());
-        if (problemOptional.isPresent() && problemOptional.get().getDescription().equals(dto.getDescription())) {
-            response.addError("Problema já cadastrado.");
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        Problem problem = new Problem(dto);
-        try {
-            problemService.save(problem);
-        } catch (Exception e) {
-            response.addError("Houve um erro ao persistir os seus dados.");
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        dto = new ProblemDTO(problem);
-        response.setData(dto);
-
-        return ResponseEntity.ok(response);
+        return new ResponseEntity<>(problemService.save(dto), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}")
     @ApiOperation(value = "Atualiza um Problema")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody ProblemDTO dto, BindingResult result) {
-        Response<ProblemDTO> response = new Response<>();
-
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Quando bem sucedida atualiza o problema"),
+            @ApiResponse(code = 400, message = "Houve um erro, a requisição está inválida"),
+            @ApiResponse(code = 403, message = "Acesso negado"),
+            @ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"),
+    })
+    public ResponseEntity<Response<Problem>> update(@PathVariable Long id, @Valid @RequestBody ProblemDTO dto, BindingResult result) {
+        log.debug("Request PUT to '/api/v1/admin/problemas/'" + id + "' in process");
         if (result.hasErrors()) {
-            response.setErrors(result);
-            return ResponseEntity.badRequest().body(response);
+            throw new InvalidParamsException("Params invalid", result);
         }
-
-        Optional<Problem> problemOptional = problemService.findById(id);
-        if (!problemOptional.isPresent()) {
-            response.addError("Problema não encontrado.");
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        Problem problem = problemOptional.get();
-
-        if (!problem.getName().equals(dto.getName())) {
-            Optional<Problem> problem1 = problemService.findByName(dto.getName());
-            if (problem1.isPresent() && problem1.get().getDescription().equals(dto.getDescription())) {
-                response.addError("Nome e descrição sendo usados em outro problema");
-                return ResponseEntity.badRequest().body(response);
-            }
-        }
-
-        problem.update(dto);
-        problem = problemService.save(problem);
-
-        dto = new ProblemDTO(problem);
-        response.setData(dto);
-
-        return ResponseEntity.ok(response);
+        return new ResponseEntity<>(problemService.update(dto), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
     @ApiOperation(value = "Deleta um Problema")
-    public ResponseEntity<Response<String>> delete(@PathVariable Long id) {
-        log.info("Removendo problema com id {}", id);
-
-        Response<String> response = new Response<>();
-
-        Optional<Problem> problemOptional = problemService.findById(id);
-
-        if (!occurrenceService.findByProblem(id).isEmpty()) {
-            response.addError("Não é possível apagar problema com ocorrências associadas");
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        if (!problemOptional.isPresent()) {
-            response.addError("Erro ao apagar problema com o id " + id);
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        try {
-            this.problemService.deleteById(id);
-        } catch (ObjectDeletedException e) {
-            response.addError("Erro ao apagar problema");
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        return ResponseEntity.ok(response);
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "Quando bem sucedida deleta a categoria"),
+            @ApiResponse(code = 403, message = "Acesso negado"),
+            @ApiResponse(code = 410, message = "Houve um erro, o recurso não existe ou já foi elimidado de forma permanente"),
+            @ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"),
+    })
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        log.debug("Request DELETE to '/api/v1/admin/problemas' in process");
+        problemService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
