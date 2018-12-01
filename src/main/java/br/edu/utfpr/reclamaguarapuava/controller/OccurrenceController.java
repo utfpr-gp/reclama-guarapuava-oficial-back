@@ -18,9 +18,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/ocorrencias")
+@RequestMapping("/api/v1/ocorrencias")
 @Api(value = "Occurrence Controller")
-@CrossOrigin(origins = "*")
 public class OccurrenceController {
 
     private final OccurrenceService service;

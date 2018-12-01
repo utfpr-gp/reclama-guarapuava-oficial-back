@@ -22,9 +22,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/api/v1/usuarios")
 @Api(value = "User Controller")
-@CrossOrigin(origins = "*")
 public class UserController {
 
     private final UserService service;

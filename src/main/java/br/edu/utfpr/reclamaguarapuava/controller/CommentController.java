@@ -6,9 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/comentarios")
+@RequestMapping("/api/v1/comentarios")
 @Api(value = "Comment Controller")
-@CrossOrigin(origins = "*")
 public class CommentController {
 
 }

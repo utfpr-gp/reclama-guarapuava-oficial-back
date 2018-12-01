@@ -6,9 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/cidades")
+@RequestMapping("/api/v1/cidades")
 @Api(value = "City Controller")
-@CrossOrigin(origins = "*")
 public class CityController {
 
 }

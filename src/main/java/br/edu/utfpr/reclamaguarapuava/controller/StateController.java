@@ -6,9 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/estados")
+@RequestMapping("/api/v1/estados")
 @Api(value = "State Controller")
-@CrossOrigin(origins = "*")
 public class StateController {
 
 }

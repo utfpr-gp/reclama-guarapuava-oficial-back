@@ -31,9 +31,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
-@RequestMapping("/api/admin/problemas")
+@RequestMapping("/api/v1/admin/problemas")
 @Api(value = "Problem Controller")
-@CrossOrigin(origins = "*")
 public class ProblemController {
 
     private final OccurrenceService occurrenceService;

@@ -6,9 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/fotos")
+@RequestMapping("/api/v1/fotos")
 @Api(value = "Photo Controller")
-@CrossOrigin(origins = "*")
 public class PhotoController {
 
 }

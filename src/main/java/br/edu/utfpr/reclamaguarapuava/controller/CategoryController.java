@@ -32,9 +32,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
-@RequestMapping("/api/admin/categorias")
+@RequestMapping("/api/v1/admin/categorias")
 @Api(value = "Category Controller")
-@CrossOrigin(origins = "*")
 public class CategoryController {
 
     private final CategoryService categoryService;
