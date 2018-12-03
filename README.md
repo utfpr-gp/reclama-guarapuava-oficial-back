@@ -17,6 +17,9 @@ A API está sendo desenvolvida pela turma do segundo semestre de 2018 da discipl
 - Controle de curtidas e comentários por ocorrências
 - Autenticação e autorização para os papeis de usuário, gerente e administrador
 
+## Online no Heroku
+[Link para a API Online - Reclama Guarapuava](https://reclama-guarapuava-api.herokuapp.com/)
+
 ## Tecnologias
 
 - Spring Boot
