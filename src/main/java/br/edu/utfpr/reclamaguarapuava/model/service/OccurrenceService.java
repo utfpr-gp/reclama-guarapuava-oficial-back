@@ -30,6 +30,7 @@ import static br.edu.utfpr.reclamaguarapuava.model.Occurrence.OccurrenceStatus.U
 
 @Service
 public class OccurrenceService {
+
     private final OccurrenceRepository repository;
     private final UserService usersService;
     private final AddressService addressService;
@@ -120,10 +121,23 @@ public class OccurrenceService {
         log.debug("executing query find by problem");
         return repository.findAllByProblemId(id, pageable);
     }
+
     @Transactional
     public List<Occurrence> findByProblem(Long id) {
         log.debug("executing query find by problem");
         return repository.findAllByProblemId(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Occurrence> findByNeighborhoodId(Long id, Pageable pageable) {
+        log.debug("executing query find by neighborhood");
+        return repository.findAllByAddress_NeighborhoodId(id, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Occurrence> findAllByStatusIn(List<Occurrence.OccurrenceStatus> status, Pageable pageable) {
+        log.debug("executing query find by status");
+        return repository.findAllByStatusIn(status, pageable);
     }
 
 }

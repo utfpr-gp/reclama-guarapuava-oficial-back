@@ -9,22 +9,25 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
 @Repository
-public interface OccurrenceRepository extends JpaRepository<Occurrence, Long>{
-	Page<Occurrence> findAllByUserId(Long id, Pageable pageable);
+public interface OccurrenceRepository extends JpaRepository<Occurrence, Long> {
 
-	Page<Occurrence> findAllByProblem_CategoryId(Long id, Pageable pageable);
+    Page<Occurrence> findAllByUserId(Long id, Pageable pageable);
 
-	List<Occurrence> findAllByProblem_CategoryId(Long id);
+    Page<Occurrence> findAllByProblem_CategoryId(Long id, Pageable pageable);
 
-	Page<Occurrence> findAllByProblemId(Long id, Pageable pageable);
+    List<Occurrence> findAllByProblem_CategoryId(Long id);
 
-	List<Occurrence> findAllByProblemId(Long id);
+    Page<Occurrence> findAllByProblemId(Long id, Pageable pageable);
 
-	Page<Occurrence> findAllByAddress_NeighborhoodIdAndProblem_CategoryIdAndStatusIn(
-			Long neighborhoodId, Long categoryId, List<Occurrence.OccurrenceStatus> statuses, Pageable pageable
-	);
+    List<Occurrence> findAllByProblemId(Long id);
 
-	Page<Occurrence> findAllByStatusIn(List<Occurrence.OccurrenceStatus> statuses, Pageable pageable);
+    Page<Occurrence> findAllByAddress_NeighborhoodIdAndProblem_CategoryIdAndStatusIn(
+            Long neighborhoodId, Long categoryId, List<Occurrence.OccurrenceStatus> statuses, Pageable pageable
+    );
+
+    Page<Occurrence> findAllByStatusIn(List<Occurrence.OccurrenceStatus> statuses, Pageable pageable);
+
+    Page<Occurrence> findAllByAddress_NeighborhoodId(Long id, Pageable pageable);
+
 }

@@ -21,6 +21,7 @@ import br.edu.utfpr.reclamaguarapuava.model.dto.NewOccurrenceDTO;
 import br.edu.utfpr.reclamaguarapuava.model.service.OccurrenceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/ocorrencias")
@@ -39,23 +40,21 @@ public class OccurrenceController {
     @GetMapping("/bairro/{neighborhoodId}/categoria/{categoryId}")
     @ApiOperation(value = "Filtra uma Ocorrência")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Quando bem sucedida para todas as ocorrências filtradas por bairro e categorias"),
-            @ApiResponse(code = 404, message = "Bairro ou categoria não existe na base de dados"),
-            @ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"),
-    })
+        @ApiResponse(code = 200, message = "Quando bem sucedida para todas as ocorrências filtradas por bairro e categorias")
+        ,@ApiResponse(code = 404, message = "Bairro ou categoria não existe na base de dados")
+        ,@ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"),})
     public ResponseEntity<Page<Occurrence>> getOccurencesByFilterTo(@PathVariable("neighborhoodId") Long neighborhoodId,
-                                                                    @PathVariable("categoryId") Long categoryId,
-                                                                    Pageable pageable) {
-        log.debug("Request GET to '/bairro/" + neighborhoodId+"/categoria/"+ categoryId+"' in process");
+            @PathVariable("categoryId") Long categoryId,
+            Pageable pageable) {
+        log.debug("Request GET to '/bairro/" + neighborhoodId + "/categoria/" + categoryId + "' in process");
         return new ResponseEntity<>(service.findByNeighborhoodAndCategory(neighborhoodId, categoryId, pageable), HttpStatus.OK);
     }
 
     @GetMapping
     @ApiOperation(value = "Retorna todas as Ocorrências")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Quando bem sucedida para todas as ocorrencias"),
-            @ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"),
-    })
+        @ApiResponse(code = 200, message = "Quando bem sucedida para todas as ocorrencias")
+        ,@ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"),})
     public ResponseEntity<Page<Occurrence>> getAllOccurrence(Pageable pageable) {
         log.debug("Request GET to '/api/v1/ocorrencias' in process");
         return new ResponseEntity<>(service.findAll(pageable), HttpStatus.OK);
@@ -64,12 +63,11 @@ public class OccurrenceController {
     @GetMapping("/{id}")
     @ApiOperation(value = "Retorna uma única Ocorrência")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Quando bem sucedida para todas as ocorrências"),
-            @ApiResponse(code = 404, message = "Ocorrencia não existe na base de dados"),
-            @ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"),
-    })
+        @ApiResponse(code = 200, message = "Quando bem sucedida para todas as ocorrências")
+        ,@ApiResponse(code = 404, message = "Ocorrencia não existe na base de dados")
+        ,@ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"),})
     public ResponseEntity<Occurrence> getOccurrenceById(@PathVariable("id") Long id) {
-        log.debug("Request GET to '/api/v1/ocorrencias/" + id +"' in process");
+        log.debug("Request GET to '/api/v1/ocorrencias/" + id + "' in process");
         return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
     }
 
@@ -77,14 +75,13 @@ public class OccurrenceController {
     @GetMapping("/usuario/{id}")
     @ApiOperation(value = "Retorna uma Ocorrência pelo Usuário")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Quando bem sucedida para todas as ocorrências do usuário"),
-            @ApiResponse(code = 401, message = "Não autorizado"),
-            @ApiResponse(code = 403, message = "Acesso negado"),
-            @ApiResponse(code = 404, message = "Usuário não existe na base de dados"),
-            @ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"),
-    })
+        @ApiResponse(code = 200, message = "Quando bem sucedida para todas as ocorrências do usuário")
+        ,@ApiResponse(code = 401, message = "Não autorizado")
+        ,@ApiResponse(code = 403, message = "Acesso negado")
+        ,@ApiResponse(code = 404, message = "Usuário não existe na base de dados")
+        ,@ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"),})
     public ResponseEntity<Page<Occurrence>> getOccurrencesByUser(@PathVariable("id") Long id, Pageable pageable) {
-        log.debug("Request GET to '/api/v1/ocorrencias/usuario/" + id +"' in process");
+        log.debug("Request GET to '/api/v1/ocorrencias/usuario/" + id + "' in process");
         return new ResponseEntity<>(service.findByUserId(id, pageable), HttpStatus.OK);
     }
 
@@ -92,13 +89,12 @@ public class OccurrenceController {
     @PostMapping
     @ApiOperation(value = "Cadastra uma Ocorrência")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Quando bem sucedida cadastra uma nova ocorrência"),
-            @ApiResponse(code = 401, message = "Não autorizado"),
-            @ApiResponse(code = 403, message = "Acesso negado"),
-            @ApiResponse(code = 400, message = "Houve um erro, a requisição está inválida"),
-            @ApiResponse(code = 422, message = "Houve um erro, a requisição está inválida, existe uma entidade com o mesmo nome"),
-            @ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"),
-    })
+        @ApiResponse(code = 201, message = "Quando bem sucedida cadastra uma nova ocorrência")
+        ,@ApiResponse(code = 401, message = "Não autorizado")
+        ,@ApiResponse(code = 403, message = "Acesso negado")
+        ,@ApiResponse(code = 400, message = "Houve um erro, a requisição está inválida")
+        ,@ApiResponse(code = 422, message = "Houve um erro, a requisição está inválida, existe uma entidade com o mesmo nome")
+        ,@ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"),})
     public ResponseEntity<Response<Occurrence>> addNewOccurrence(@Valid @RequestBody NewOccurrenceDTO newOccurrenceDTO) {
         log.debug("Request POST to '/api/v1/ocorrencias' in process");
         return new ResponseEntity<>(service.newOccurrence(newOccurrenceDTO), HttpStatus.CREATED);
@@ -108,14 +104,58 @@ public class OccurrenceController {
     @PutMapping("/feedback")
     @ApiOperation(value = "Liked/Notliked Usuário")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Quando bem sucedida cadastra um novo feedback para ocorrência"),
-            @ApiResponse(code = 401, message = "Não autorizado"),
-            @ApiResponse(code = 403, message = "Acesso negado"),
-            @ApiResponse(code = 400, message = "Houve um erro, a requisição está inválida"),
-            @ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"),
-    })
+        @ApiResponse(code = 201, message = "Quando bem sucedida cadastra um novo feedback para ocorrência")
+        ,@ApiResponse(code = 401, message = "Não autorizado")
+        ,@ApiResponse(code = 403, message = "Acesso negado")
+        ,@ApiResponse(code = 400, message = "Houve um erro, a requisição está inválida")
+        ,@ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"),})
     public ResponseEntity<Response<Occurrence>> addFeedbackUser(@Valid @RequestBody LikedNoLikedDTO likedNoLikedDTo) {
         log.debug("Request PUT to '/api/v1/ocorrencias/feedback' in process");
         return new ResponseEntity<>(service.addFeedbackUser(likedNoLikedDTo), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+    @GetMapping("/bairro/{neighborhoodId}")
+    @ApiOperation(value = "Filtra ocorrências por bairro")
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Quando bem sucedida para todas as ocorrências filtradas por bairro")
+        ,@ApiResponse(code = 401, message = "Não autorizado")
+        ,@ApiResponse(code = 403, message = "Acesso negado")
+        ,@ApiResponse(code = 404, message = "Bairro não existe na base de dados")
+        ,@ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor")
+    })
+    public ResponseEntity<Page<Occurrence>> getOccurrencesByFilterToNeighborhood(@PathVariable("neighborhoodId") Long neighborhoodId, Pageable pageable) {
+        log.debug("Request GET to '/bairro/" + neighborhoodId + "' in process");
+        return new ResponseEntity<>(service.findByNeighborhoodId(neighborhoodId, pageable), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+    @GetMapping("/categoria/{categoryId}")
+    @ApiOperation(value = "Filtra ocorrências por categoria")
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Quando bem sucedida para todas as ocorrências filtradas por bairro")
+        ,@ApiResponse(code = 401, message = "Não autorizado")
+        ,@ApiResponse(code = 403, message = "Acesso negado")
+        ,@ApiResponse(code = 404, message = "Bairro não existe na base de dados")
+        ,@ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor")
+    })
+    public ResponseEntity<Page<Occurrence>> getOccurrencesByFilterToCategory(@PathVariable("categoryId") Long categoryId, Pageable pageable) {
+        log.debug("Request GET to '/categoria/" + categoryId + "' in process");
+        return new ResponseEntity<>(service.findByCategory(categoryId, pageable), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+    @GetMapping("/status/{status}")
+    @ApiOperation(value = "Filtra ocorrências por status")
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Quando bem sucedida para todas as ocorrências filtradas por bairro")
+        ,@ApiResponse(code = 401, message = "Não autorizado")
+        ,@ApiResponse(code = 403, message = "Acesso negado")
+        ,@ApiResponse(code = 404, message = "Bairro não existe na base de dados")
+        ,@ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor")
+    })
+    public ResponseEntity<Page<Occurrence>> getOccurrencesByFilterToStatus(@PathVariable("status") List<Occurrence.OccurrenceStatus> status, Pageable pageable) {
+        log.debug("Request GET to '/status/" + status + "' in process");
+        return new ResponseEntity<>(service.findAllByStatusIn(status, pageable), HttpStatus.OK);
     }
 }
