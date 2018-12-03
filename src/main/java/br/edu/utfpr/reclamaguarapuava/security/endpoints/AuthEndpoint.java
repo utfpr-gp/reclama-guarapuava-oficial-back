@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.edu.utfpr.reclamaguarapuava.security.service.SecurityService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthEndpoint {
     private final SecurityService securityService;
 

@@ -21,42 +21,12 @@ import lombok.EqualsAndHashCode;
 @Table(name = "problem")
 @EqualsAndHashCode(callSuper = true)
 public class Problem extends EntityApplication {
-
+    @Column(nullable = false)
     private String name;
 
-    @Column(name = "date_created", nullable = false)
-    private Date dateCreated;
-
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String description;
 
     @ManyToOne
     private Category category;
-
-    public Problem() {
-
-    }
-
-    public Problem(String name, Date date_created, String description, Category category) {
-        this.name = name;
-        this.dateCreated = date_created;
-        this.description = description;
-        this.category = category;
-    }
-
-    public Problem(ProblemDTO problemDTO) {
-        this.id = problemDTO.getId();
-        this.name = problemDTO.getName();
-        this.description = problemDTO.getDescription();
-        this.dateCreated = problemDTO.getDateCreated();
-        this.category = problemDTO.getCategory();
-    }
-
-    public void update(ProblemDTO problemDTO) {
-        this.id = problemDTO.getId();
-        this.name = problemDTO.getName();
-        this.description = problemDTO.getDescription();
-        this.dateCreated = problemDTO.getDateCreated();
-        this.category = problemDTO.getCategory();
-    }
 }

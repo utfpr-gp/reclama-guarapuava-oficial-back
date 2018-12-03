@@ -2,6 +2,7 @@ package br.edu.utfpr.reclamaguarapuava.security.configuration;
 
 import java.util.Arrays;
 
+import com.google.common.collect.ImmutableList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -27,18 +28,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] PUBLIC_MATCHERS = {
         "/h2-console/**",
-        "/hello",
         "/v2/api-docs",
         "/swagger-ui.html",
         "/swagger-resources/**"
     };
 
     private static final String[] PUBLIC_MATCHERS_READ = {
-        "/ocorrencias/**"
+        "/ocorrencias/**",
     };
 
     private static final String[] PUBLIC_MATCHERS_WRITE = {
-        "/users/register"
+        "/users/register",
     };
 
     private final Environment environment;
@@ -87,7 +87,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        CorsConfiguration config = new CorsConfiguration().applyPermitDefaultValues();
+        config.setAllowedMethods(ImmutableList.of("GET", "POST", "PUT", "DELETE", "PATCH"));
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
 

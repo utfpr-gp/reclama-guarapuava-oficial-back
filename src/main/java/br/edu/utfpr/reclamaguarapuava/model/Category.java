@@ -10,6 +10,7 @@ import br.edu.utfpr.reclamaguarapuava.model.dto.CategoryDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  *
@@ -21,8 +22,10 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class Category extends EntityApplication {
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false, unique = true)
     private String name;
+
+    public Category() {}
 
     public Category(CategoryDTO categoryDTO) {
         this.id = categoryDTO.getId();
