@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/utfpr-gp/reclama-guarapuava-oficial-back.svg?branch=master)](https://travis-ci.org/utfpr-gp/reclama-guarapuava-oficial-back)
+[![Build Status](https://travis-ci.org/patrick3623/reclama-guarapuava-oficial-back.svg?branch=master)](https://travis-ci.org/patrick3623/reclama-guarapuava-oficial-back)
 
 # Reclama Guarapuava - API
 
