@@ -133,10 +133,10 @@ public class OccurrenceController {
     @GetMapping("/categoria/{categoryId}")
     @ApiOperation(value = "Filtra ocorrências por categoria")
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Quando bem sucedida para todas as ocorrências filtradas por bairro")
+        @ApiResponse(code = 200, message = "Quando bem sucedida para todas as ocorrências filtradas por categoria")
         ,@ApiResponse(code = 401, message = "Não autorizado")
         ,@ApiResponse(code = 403, message = "Acesso negado")
-        ,@ApiResponse(code = 404, message = "Bairro não existe na base de dados")
+        ,@ApiResponse(code = 404, message = "Categoria não existe na base de dados")
         ,@ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor")
     })
     public ResponseEntity<Page<Occurrence>> getOccurrencesByFilterToCategory(@PathVariable("categoryId") Long categoryId, Pageable pageable) {
@@ -148,10 +148,10 @@ public class OccurrenceController {
     @GetMapping("/status/{status}")
     @ApiOperation(value = "Filtra ocorrências por status")
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Quando bem sucedida para todas as ocorrências filtradas por bairro")
+        @ApiResponse(code = 200, message = "Quando bem sucedida para todas as ocorrências filtradas por status")
         ,@ApiResponse(code = 401, message = "Não autorizado")
         ,@ApiResponse(code = 403, message = "Acesso negado")
-        ,@ApiResponse(code = 404, message = "Bairro não existe na base de dados")
+        ,@ApiResponse(code = 404, message = "Status não existe na base de dados")
         ,@ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor")
     })
     public ResponseEntity<Page<Occurrence>> getOccurrencesByFilterToStatus(@PathVariable("status") List<Occurrence.OccurrenceStatus> status, Pageable pageable) {
