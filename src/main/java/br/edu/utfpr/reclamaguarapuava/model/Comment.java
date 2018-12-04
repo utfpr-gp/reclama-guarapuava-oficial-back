@@ -1,17 +1,13 @@
 package br.edu.utfpr.reclamaguarapuava.model;
 
 import br.edu.utfpr.reclamaguarapuava.util.EntityApplication;
-import java.util.Date;
-
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 /**
  *
@@ -24,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class Comment extends EntityApplication {
 
     @Column(name = "date_comment_created", nullable = false)
-    private Date dateCommentCreated;
+    private LocalDate dateCommentCreated;
 
     @ManyToOne
     private User user;
