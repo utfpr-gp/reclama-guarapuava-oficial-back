@@ -34,10 +34,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     };
 
     private static final String[] PUBLIC_MATCHERS_READ = {
-        "/api/v1/ocorrencias/**"};
+        "/api/v1/ocorrencias/**",
+        "/api/v1/comentarios/**"
+    };
 
     private static final String[] PUBLIC_MATCHERS_WRITE = {
-        "/users/register"};
+        "/users/register",
+        "/api/v1/comentarios/**"
+    };
 
     private final Environment environment;
     private final UserDetailsService userDetailsService;
