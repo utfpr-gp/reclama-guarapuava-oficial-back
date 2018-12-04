@@ -1,18 +1,33 @@
 package br.edu.utfpr.reclamaguarapuava.model.dto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import java.util.Optional;
 
-import lombok.AllArgsConstructor;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import br.edu.utfpr.reclamaguarapuava.model.City;
+import br.edu.utfpr.reclamaguarapuava.model.Neighborhood;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class NeighborhoodDTO {
-    @NotBlank
-    @Size(min = 4, max = 50)
-    private String name;
-    private Long cityId;
+
+	private City city;
+
+	private Long id;
+
+	@NotEmpty(message = "O nome não pode ser vazio")
+	@Length(min = 2, max = 100, message = "O nome do Bairro deve conter no mínimo 2 e máximo 100 caracteres.")
+	private String name;
+
+	public NeighborhoodDTO(Neighborhood neighborhood) {
+		this.id = neighborhood.getId();
+		this.name = neighborhood.getName();
+	}
+
+	public NeighborhoodDTO(Optional<Neighborhood> neighborhood) {
+		this.id = neighborhood.get().getId();
+		this.name = neighborhood.get().getName();
+	}
 }

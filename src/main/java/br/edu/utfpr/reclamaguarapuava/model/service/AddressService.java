@@ -17,39 +17,39 @@ import br.edu.utfpr.reclamaguarapuava.model.repository.NeighborhoodRepository;
 
 @Service
 public class AddressService {
-	
+
 	@Autowired
-    CityRepository cityRepository;
-	
+	CityRepository cityRepository;
+
 	@Autowired
-    AddressRepository addressRepository;
-	
+	AddressRepository addressRepository;
+
 	@Autowired
-    NeighborhoodRepository neighborhoodRepository;   
+	NeighborhoodRepository neighborhoodRepository;
 
-    @Transactional
-    public Address addNewAddress(AddressDTO addressDTO) {
-    	
-        NeighborhoodDTO neighborhoodDTO = addressDTO.getNeighborhood();
-        Long cityId = neighborhoodDTO.getCityId();
-        City city = cityRepository.findById(cityId).orElseThrow(() -> new EntityNotFoundException("city not found"));
+	@Transactional
+	public Address addNewAddress(AddressDTO addressDTO) {
 
-        Neighborhood neighborhood = new Neighborhood();
-        neighborhood.setName(neighborhoodDTO.getName());
-        neighborhood.setCity(city);
+		NeighborhoodDTO neighborhoodDTO = addressDTO.getNeighborhood();
+		Long cityId = neighborhoodDTO.getCity().getId();
+		City city = cityRepository.findById(cityId).orElseThrow(() -> new EntityNotFoundException("city not found"));
 
-        neighborhood = neighborhoodRepository.save(neighborhood);
+		Neighborhood neighborhood = new Neighborhood();
+		neighborhood.setName(neighborhoodDTO.getName());
+		neighborhood.setCity(city);
 
-        Address address = new Address();
-        address.setStreet(addressDTO.getStreet());
-        address.setNumber(addressDTO.getNumber());
-        address.setNeighborhood(neighborhood);
+		neighborhood = neighborhoodRepository.save(neighborhood);
 
-        return addressRepository.save(address);
-    }
+		Address address = new Address();
+		address.setStreet(addressDTO.getStreet());
+		address.setNumber(addressDTO.getNumber());
+		address.setNeighborhood(neighborhood);
 
-    @Transactional(readOnly = true)
-    public City findCityById(Long id) {
-        return cityRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("city not found"));
-    }
+		return addressRepository.save(address);
+	}
+
+	@Transactional(readOnly = true)
+	public City findCityById(Long id) {
+		return cityRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("city not found"));
+	}
 }

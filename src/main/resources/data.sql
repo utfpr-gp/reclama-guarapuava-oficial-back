@@ -1,5 +1,4 @@
 --begin state table initialization
-
 INSERT INTO state (id, name, abbvr) VALUES ('1', 'Paraná', 'PR');
 --end state table initialization
 --begin city table initialization

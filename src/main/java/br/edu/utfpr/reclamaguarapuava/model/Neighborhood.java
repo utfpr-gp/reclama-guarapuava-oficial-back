@@ -1,16 +1,14 @@
 package br.edu.utfpr.reclamaguarapuava.model;
 
-import br.edu.utfpr.reclamaguarapuava.util.EntityApplication;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
+import br.edu.utfpr.reclamaguarapuava.model.dto.NeighborhoodDTO;
+import br.edu.utfpr.reclamaguarapuava.util.EntityApplication;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 /**
  *
@@ -22,9 +20,23 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class Neighborhood extends EntityApplication {
 
-    @ManyToOne
-    private City city;
+	@ManyToOne
+	private City city;
 
-    @Column(nullable = false, length = 50)
-    private String name;
+	@Column(nullable = false, length = 50)
+	private String name;
+
+	public Neighborhood() {
+
+	}
+
+	public Neighborhood(NeighborhoodDTO neighborhoodDTO) {
+		this.id = neighborhoodDTO.getId();
+		this.name = neighborhoodDTO.getName();
+	}
+
+	public void update(NeighborhoodDTO neighborhoodDTO) {
+		this.id = neighborhoodDTO.getId();
+		this.name = neighborhoodDTO.getName();
+	}
 }
