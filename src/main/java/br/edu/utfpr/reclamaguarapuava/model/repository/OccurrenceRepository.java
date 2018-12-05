@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.edu.utfpr.reclamaguarapuava.model.Occurrence;
+import java.time.LocalDate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -30,4 +31,6 @@ public interface OccurrenceRepository extends JpaRepository<Occurrence, Long> {
 
     Page<Occurrence> findAllByAddress_NeighborhoodId(Long id, Pageable pageable);
 
+    Page<Occurrence> findAllByCreatedAtBetween(LocalDate startDate, LocalDate endDate,
+            Pageable pageable);
 }

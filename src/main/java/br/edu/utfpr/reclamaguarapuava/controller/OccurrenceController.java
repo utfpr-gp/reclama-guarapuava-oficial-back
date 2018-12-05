@@ -21,6 +21,7 @@ import br.edu.utfpr.reclamaguarapuava.model.dto.NewOccurrenceDTO;
 import br.edu.utfpr.reclamaguarapuava.model.service.OccurrenceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -157,5 +158,22 @@ public class OccurrenceController {
     public ResponseEntity<Page<Occurrence>> getOccurrencesByFilterToStatus(@PathVariable("status") List<Occurrence.OccurrenceStatus> status, Pageable pageable) {
         log.debug("Request GET to '/status/" + status + "' in process");
         return new ResponseEntity<>(service.findAllByStatusIn(status, pageable), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+    @GetMapping("/data-inicio/{startDate}/data-fim/{endDate}")
+    @ApiOperation(value = "Filtra ocorrências por data")
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Quando bem sucedida para todas as ocorrências filtradas por data")
+        ,@ApiResponse(code = 401, message = "Não autorizado")
+        ,@ApiResponse(code = 403, message = "Acesso negado")
+        ,@ApiResponse(code = 404, message = "Ocorrência não existe na base de dados")
+        ,@ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor")
+    })
+    public ResponseEntity<Page<Occurrence>> getOccurrencesByCreatedAtBetween(@PathVariable("startDate") String startDate,
+            @PathVariable("endDate") String endDate, Pageable pageable) {
+        log.debug("Request GET to '/data-inicio/" + startDate + "/data-fim/" + endDate + "' in process");
+        return new ResponseEntity<>(service.findAllByCreatedAtBetween(LocalDate.parse(startDate),
+                LocalDate.parse(endDate), pageable), HttpStatus.OK);
     }
 }
