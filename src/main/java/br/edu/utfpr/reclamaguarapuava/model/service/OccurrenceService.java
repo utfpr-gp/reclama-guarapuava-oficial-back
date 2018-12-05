@@ -27,6 +27,7 @@ import java.util.List;
 
 import static br.edu.utfpr.reclamaguarapuava.model.Occurrence.OccurrenceStatus.UNRESOLVED;
 import static br.edu.utfpr.reclamaguarapuava.model.Occurrence.OccurrenceStatus.URGENT;
+import java.time.LocalDate;
 
 @Service
 public class OccurrenceService {
@@ -140,4 +141,9 @@ public class OccurrenceService {
         return repository.findAllByStatusIn(status, pageable);
     }
 
+    @Transactional(readOnly = true)
+    public Page<Occurrence> findAllByCreatedAtBetween(LocalDate startDate, LocalDate endDate, Pageable pageable) {
+        log.debug("executing query find by date");
+        return repository.findAllByCreatedAtBetween(startDate, endDate, pageable);
+    }
 }
