@@ -14,12 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.edu.utfpr.reclamaguarapuava.model.Neighborhood;
-import br.edu.utfpr.reclamaguarapuava.model.dto.NeighborhoodDTO;
 import br.edu.utfpr.reclamaguarapuava.model.repository.NeighborhoodRepository;
-import br.edu.utfpr.reclamaguarapuava.util.Response;
 
 @Service
 public class NeighborhoodService {
+
 	private final NeighborhoodRepository neighborhoodRepository;
 
 	private static final Logger log = LoggerFactory.getLogger(NeighborhoodService.class);
@@ -36,11 +35,11 @@ public class NeighborhoodService {
 	}
 
 	@Transactional
-	public Response<Neighborhood> findById(Long id) {
+	public Neighborhood findById(Long id) {
 		log.debug("executing query find by id: " + id);
 		Neighborhood neighborhood = neighborhoodRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("neighborhood not found by id: " + id));
-		return new Response<>(neighborhood);
+		return neighborhood;
 	}
 
 	@Transactional
@@ -49,22 +48,22 @@ public class NeighborhoodService {
 	}
 
 	@Transactional
-	public Response<Neighborhood> save(NeighborhoodDTO neighborhoodDTO) {
+	public Neighborhood save(Neighborhood neighborhood) {
 		log.debug("executing statement insert");
-		this.findByName(neighborhoodDTO.getName()).ifPresent(n -> {
+		this.findByName(neighborhood.getName()).ifPresent(n -> {
 			throw new EntityExistsException("neighborhood with this name: " + n.getName()
 					+ " exist in database whit id: " + n.getId() + " created: " + n.getCreatedAt());
 		});
-		return new Response<>(neighborhoodRepository.save(new Neighborhood(neighborhoodDTO)));
+		return neighborhoodRepository.save(neighborhood);
 	}
 
 	@Transactional
-	public Response<Neighborhood> update(NeighborhoodDTO dto, Long id) {
+	public Neighborhood update(Neighborhood neighborhood, Long id) {
 		log.debug("executing statement alter");
-		Neighborhood neighborhood = neighborhoodRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("neighborhood not found by id: " + dto.getId()));
-		neighborhood.setName(dto.getName());
-		return new Response<>(neighborhoodRepository.save(neighborhood));
+		Neighborhood n = neighborhoodRepository.findById(id).orElseThrow(
+				() -> new EntityNotFoundException("neighborhood not found by id: " + neighborhood.getId()));
+		n.setName(neighborhood.getName());
+		return neighborhoodRepository.save(neighborhood);
 	}
 
 	public void deleteById(Long id) {

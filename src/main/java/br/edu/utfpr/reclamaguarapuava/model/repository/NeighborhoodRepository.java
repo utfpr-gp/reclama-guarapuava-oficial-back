@@ -14,4 +14,5 @@ public interface NeighborhoodRepository extends JpaRepository<Neighborhood, Long
 	Optional<Neighborhood> findByName(String name);
 
 	List<Neighborhood> findAllByName(String name);
+
 }

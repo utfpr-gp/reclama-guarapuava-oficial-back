@@ -33,6 +33,7 @@ public class Neighborhood extends EntityApplication {
 	public Neighborhood(NeighborhoodDTO neighborhoodDTO) {
 		this.id = neighborhoodDTO.getId();
 		this.name = neighborhoodDTO.getName();
+		this.city = neighborhoodDTO.getCity();
 	}
 
 	public void update(NeighborhoodDTO neighborhoodDTO) {

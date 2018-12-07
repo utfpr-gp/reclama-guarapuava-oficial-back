@@ -35,9 +35,9 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "Neighborhood", description = "Url para manipular ou buscar bairros")
 public class NeighborhoodController {
 
-	private final NeighborhoodService neighborhoodService;
-
 	private static final Logger log = LoggerFactory.getLogger(NeighborhoodController.class);
+
+	private final NeighborhoodService neighborhoodService;
 
 	@Autowired
 	public NeighborhoodController(NeighborhoodService neighborhoodService) {
@@ -49,9 +49,11 @@ public class NeighborhoodController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Quando bem sucedida para todos os bairros"),
 			@ApiResponse(code = 403, message = "Acesso negado"),
 			@ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"), })
-	public ResponseEntity<Page<Neighborhood>> getAll(Pageable pageable) {
+	public ResponseEntity<Page<NeighborhoodDTO>> getAll(Pageable pageable) {
 		log.debug("Request GET to '/api/v1/admin/bairros' in process");
-		return new ResponseEntity<>(neighborhoodService.findAll(pageable), HttpStatus.OK);
+		Page<Neighborhood> neiPage = this.neighborhoodService.findAll(pageable);
+		Page<NeighborhoodDTO> neiPageDto = neiPage.map(s -> new NeighborhoodDTO(s));
+		return new ResponseEntity<>(neiPageDto, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/{id}")
@@ -61,10 +63,12 @@ public class NeighborhoodController {
 			@ApiResponse(code = 403, message = "Acesso negado"),
 			@ApiResponse(code = 404, message = "Bairro não existe na base de dados"),
 			@ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"), })
-	public ResponseEntity<Response<Neighborhood>> getById(
+	public ResponseEntity<Response<NeighborhoodDTO>> getById(
 			@ApiParam(name = "id", value = "Númeral do tipo long que corresponde ao id do bairro a qual requer detalhes") @PathVariable("id") Long id) {
 		log.debug("Request GET to '/api/v1/admin/bairros/" + id + "' in process");
-		return new ResponseEntity<>(neighborhoodService.findById(id), HttpStatus.OK);
+		NeighborhoodDTO neighborhoodDTO;
+		neighborhoodDTO = new NeighborhoodDTO(neighborhoodService.findById(id));
+		return new ResponseEntity<>(new Response<>(neighborhoodDTO), HttpStatus.OK);
 	}
 
 	@PostMapping
@@ -74,12 +78,15 @@ public class NeighborhoodController {
 			@ApiResponse(code = 400, message = "Houve um erro, a requisição está inválida"),
 			@ApiResponse(code = 422, message = "Houve um erro, a requisição está inválida, existe uma entidade com o mesmo nome"),
 			@ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"), })
-	public ResponseEntity<Response<Neighborhood>> save(@Valid @RequestBody NeighborhoodDTO dto, BindingResult result) {
+	public ResponseEntity<Response<NeighborhoodDTO>> save(@Valid @RequestBody NeighborhoodDTO neighborhoodDTO,
+			BindingResult result) {
 		log.debug("Request POST to '/api/v1/admin/bairros' in process");
 		if (result.hasFieldErrors()) {
 			throw new InvalidParamsException("Params invalid", result);
 		}
-		return new ResponseEntity<>(neighborhoodService.save(dto), HttpStatus.CREATED);
+		Neighborhood neighborhood = new Neighborhood(neighborhoodDTO);
+		neighborhoodDTO = new NeighborhoodDTO(neighborhoodService.save(neighborhood));
+		return new ResponseEntity<>(new Response<>(neighborhoodDTO), HttpStatus.CREATED);
 	}
 
 	@PutMapping(value = "/{id}")
@@ -89,13 +96,15 @@ public class NeighborhoodController {
 			@ApiResponse(code = 400, message = "Houve um erro, a requisição está inválida"),
 			@ApiResponse(code = 422, message = "Houve um erro de conflito com outra entidade, por exemplo, nome do bairro já existe"),
 			@ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor"), })
-	public ResponseEntity<Response<Neighborhood>> update(@PathVariable Long id, @Valid @RequestBody NeighborhoodDTO dto,
-			BindingResult result) {
+	public ResponseEntity<Response<NeighborhoodDTO>> update(@PathVariable Long id,
+			@Valid @RequestBody NeighborhoodDTO neighborhoodDTO, BindingResult result) {
 		log.debug("Request PUT to '/api/v1/admin/bairros/" + id + "' in process");
 		if (result.hasFieldErrors()) {
 			throw new InvalidParamsException("Params to update invalid", result);
 		}
-		return new ResponseEntity<>(neighborhoodService.update(dto, id), HttpStatus.OK);
+		Neighborhood neighborhood = new Neighborhood(neighborhoodDTO);
+		neighborhoodDTO = new NeighborhoodDTO(neighborhoodService.update(neighborhood, id));
+		return new ResponseEntity<>(new Response<>(neighborhoodDTO), HttpStatus.OK);
 	}
 
 	@DeleteMapping(value = "/{id}")
