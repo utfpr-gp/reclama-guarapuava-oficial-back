@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -101,5 +102,19 @@ public class CommentController {
     public ResponseEntity<Page<Comment>> getAllCommentByUser(@PathVariable("userId") Long id, Pageable pageable) {
         log.debug("Request GET to '/api/v1/comentarios/usuario/" + id + "' in process");
         return new ResponseEntity<>(service.findByUser(id, pageable), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('USER')")
+    @DeleteMapping(value = "/deletar/{id}")
+    @ApiOperation(value = "Deletar um comentário")
+    @ApiResponses(value = {
+        @ApiResponse(code = 204, message = "Quando bem sucedida deleta o comentário")
+        ,@ApiResponse(code = 403, message = "Acesso negado")
+        ,@ApiResponse(code = 410, message = "Houve um erro, o recurso não existe ou já foi elimidado de forma permanente")
+        ,@ApiResponse(code = 500, message = "Quando a requisição causou um error interno no servidor")})
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        log.debug("Request DELETE to '/api/v1/comentarios/deletar/" + id + "' in process");
+        service.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -65,4 +65,8 @@ public class CommentService {
         log.debug("executing query find by user");
         return repository.findAllByUserId(id, pageable);
     }
+
+    public void deleteById(Long id) {
+        repository.deleteById(id);
+    }
 }
